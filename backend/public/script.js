@@ -18,12 +18,12 @@ fetch("/points")
     });
 
     // Verbindungen laden
-    fetch("/connections")
+    fetch("/routes")
       .then((response) => response.json())
-      .then((connections) => {
-        connections.forEach((connection) => {
-          const fromPoint = points.find((p) => p.ip === connection.from);
-          const toPoint = points.find((p) => p.ip === connection.to);
+      .then((routes) => {
+        routes.forEach((route) => {
+          const fromPoint = points.find((p) => p.ip === route.from);
+          const toPoint = points.find((p) => p.ip === route.to);
 
           if (fromPoint && toPoint) {
             // Linie zwischen den Punkten zeichnen

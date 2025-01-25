@@ -7,8 +7,8 @@ app.get("/points", (req, res) => {
   res.sendFile(__dirname + "/../data/points.json");
 });
 
-app.get("/connections", (req, res) => {
-  res.sendFile(__dirname + "/../data/connections.json");
+app.get("/routes", (req, res) => {
+  res.sendFile(__dirname + "/../data/routes.json");
 });
 
 // Statische Dateien bereitstellen (HTML, JS, CSS)
