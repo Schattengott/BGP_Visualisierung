@@ -1,0 +1,13 @@
+{
+    "name": "bgp-visualisierung",
+    "version": "1.0.0",
+    "description": "Eine Node.js-Anwendung zur Visualisierung von BGP-Daten",
+    "main": "server.js",
+    "scripts": {
+      "start": "node backend/server.js"
+    },
+    "dependencies": {
+      "express": "^4.18.2"
+    }
+}
+  
