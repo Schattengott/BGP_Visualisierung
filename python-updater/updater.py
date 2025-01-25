@@ -16,25 +16,25 @@ def generate_random_points(num_points=5):
         })
     return points
 
-def generate_random_connections(points):
-    connections = []
+def generate_random_routes(points):
+    routes = []
     for i in range(len(points) - 1):
-        connections.append({
+        routes.append({
             "from": points[i]["ip"],
             "to": points[i + 1]["ip"]
         })
-    return connections
+    return routes
 
 if __name__ == "__main__":
     points = generate_random_points(10)
-    connections = generate_random_connections(points)
+    routes = generate_random_routes(points)
 
     # Punkte speichern
-    with open("../data/points.json", "w") as f:
+    with open("data/points.json", "w") as f:
         json.dump(points, f, indent=4)
 
     # Verbindungen speichern
-    with open("../data/connections.json", "w") as f:
-        json.dump(connections, f, indent=4)
+    with open("data/routes.json", "w") as f:
+        json.dump(routes, f, indent=4)
 
     print("JSON-Dateien aktualisiert!")

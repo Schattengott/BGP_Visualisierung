@@ -3,14 +3,22 @@
   "build": {
     "dockerfile": "Dockerfile"
   },
-  "settings": {
-    "terminal.integrated.defaultProfile.linux": "bash"
+  "customizations": {
+    "vscode": {
+      "settings": {
+        "terminal.integrated.defaultProfile.linux": "bash"
+      },
+      "extensions": [
+        "dbaeumer.vscode-eslint",
+        "ms-python.python",
+        "ms-python.vscode-pylance"
+      ]
+    }
   },
-  "postCreateCommand": "npm install",
-  "extensions": [
-    "dbaeumer.vscode-eslint",
-    "ms-python.python",
-    "ms-python.vscode-pylance"
-  ],
-  "forwardPorts": [3000]
+  "forwardPorts": [3000],
+  "features": {
+    "node": "latest",    // Node.js direkt installieren
+    "python": "latest"   // Python direkt installieren
+  },
+  "postCreateCommand": "npm install"
 }
