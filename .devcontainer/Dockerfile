@@ -11,7 +11,17 @@ WORKDIR /workspaces/BGP_Visualisierung
 # COPY python-updater/requirements.txt /tmp/requirements.txt
 # RUN pip3 install -r /tmp/requirements.txt
 
+# Kopiere nur package.json und package-lock.json (falls vorhanden)
+COPY backend/package.json backend/package-lock.json /workspaces/BGP_Visualisierung/backend/
+
 # Installiere die Node.js-Abhängigkeiten
 RUN cd /workspaces/BGP_Visualisierung/backend && npm install
+
+# Kopiere den gesamten Quellcode
+COPY . /workspaces/BGP_Visualisierung
+
+# Exponiere den Port 3000
+EXPOSE 3000
+
 # Starte den Server
 CMD ["node", "/workspaces/BGP_Visualisierung/backend/server.js"]
