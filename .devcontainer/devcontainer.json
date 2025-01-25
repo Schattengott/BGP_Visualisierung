@@ -1,0 +1,16 @@
+{
+  "name": "Node.js & Python",
+  "build": {
+    "dockerfile": "Dockerfile"
+  },
+  "settings": {
+    "terminal.integrated.defaultProfile.linux": "bash"
+  },
+  "postCreateCommand": "npm install",
+  "extensions": [
+    "dbaeumer.vscode-eslint",
+    "ms-python.python",
+    "ms-python.vscode-pylance"
+  ],
+  "forwardPorts": [3000]
+}
