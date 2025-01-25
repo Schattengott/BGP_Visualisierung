@@ -4,11 +4,15 @@ const port = 3000;
 
 // JSON-Endpunkte für Punkte und Verbindungen
 app.get("/points", (req, res) => {
-  res.sendFile(__dirname + "/../data/points.json");
+  let Path = __dirname.replace("backend","") + "data/points.json"
+  res.sendFile(Path);
+  //res.sendFile(__dirname + "/../data/points.json");
 });
 
 app.get("/routes", (req, res) => {
-  res.sendFile(__dirname + "/../data/routes.json");
+  let Path = __dirname.replace("backend","") + "data/routes.json"
+  res.sendFile(Path);
+  //res.sendFile(__dirname + "/../data/routes.json");
 });
 
 // Statische Dateien bereitstellen (HTML, JS, CSS)
