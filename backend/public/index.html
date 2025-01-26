@@ -6,15 +6,12 @@
   <title>Weltkarte mit Verbindungen</title>
   <link rel="stylesheet" href="styles.css">
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
-  <style>
-    /* Optionaler Stil direkt im HTML */
-    #map {
-      height: 100vh; /* Die Karte füllt den gesamten Viewport aus */
-    }
-  </style>
 </head>
 <body>
-  <div id="map"></div>
+  <div id="container">
+    <div id="map"></div>
+    <div id="list"></div>
+  </div>
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
   <script src="script.js"></script>
 </body>
