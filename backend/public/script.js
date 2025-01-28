@@ -3,7 +3,7 @@ const map = L.map("map", {
   center: [20, 0], // Standardposition
   zoom: 2,         // Standardzoom
   minZoom: 2,      // Kein Herauszoomen unter Zoomstufe 2
-  maxZoom: 10,     // Kein Hineinzoomen über Zoomstufe 10
+  maxZoom: 14,     // Kein Hineinzoomen über Zoomstufe 10
   maxBounds: [
     [-90, -180],   // Südwest-Ecke (unterstes linkes Eck der Welt)
     [90, 180],     // Nordost-Ecke (oberstes rechtes Eck der Welt)
@@ -82,7 +82,7 @@ function handleRouteClick(event) {
   // Setze eine größere Linienbreite für die angeklickte Route
   clickedPolyline.setStyle({
     weight: 10, // Größe der Linie erhöhen
-    color: "yellow", // Optional: Farbe ändern, um die Route hervorzuheben
+    //color: "yellow", // Optional: Farbe ändern, um die Route hervorzuheben
   });
 
   // Setze die aktuelle Polyline als die markierte Polyline
