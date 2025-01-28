@@ -1,4 +1,10 @@
-node_modules
-package-lock.json
+#Database
 data
 geolite_database
+
+#Server-Cache-Data
+node_modules
+package-lock.json
+
+#User-Cache-Data
+site.webmanifest
