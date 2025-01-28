@@ -11,16 +11,10 @@ const map = L.map("map", {
   maxBoundsViscosity: 0.5, // "Elastizität" der Begrenzung (1.0 = strikt)
 });
 
-// Tile-Layer hell hinzufügen
-//L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
-//  maxZoom: 19,
-//}).addTo(map);
-
 // Tile-Layer dunkel hinzufügen
 L.tileLayer("https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png", {
   attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/">CARTO</a>',
   subdomains: "abcd",
-  //maxZoom: 19,
 }).addTo(map);
 
 // Funktion zur Darstellung der Knotenliste als Tabelle
@@ -61,6 +55,40 @@ function updateKnotenListe(points) {
   listContainer.appendChild(table);
 }
 
+// Funktion zur Generierung einer zufälligen Farbe basierend auf einem Index
+function getRandomColor(index) {
+  // Erzeuge eine zufällige Farbe mit einem festen "Seed" für jede Zahl
+  const r = (index * 50 + 100) % 255;
+  const g = (index * 30 + 150) % 255;
+  const b = (index * 10 + 200) % 255;
+  return `rgb(${r}, ${g}, ${b})`;
+}
+
+// Variable für die aktuell markierte Polyline speichern
+let currentHighlightedPolyline = null;
+
+// Funktion für das Erhöhen der Linienbreite bei Klick
+function handleRouteClick(event) {
+  const clickedPolyline = event.target;
+
+  // Wenn eine andere Linie vorher markiert war, entferne die Markierung
+  if (currentHighlightedPolyline && currentHighlightedPolyline !== clickedPolyline) {
+    currentHighlightedPolyline.setStyle({
+      weight: 2, // Originalbreite wiederherstellen
+      color: currentHighlightedPolyline.options.color, // Ursprüngliche Farbe beibehalten
+    });
+  }
+
+  // Setze eine größere Linienbreite für die angeklickte Route
+  clickedPolyline.setStyle({
+    weight: 10, // Größe der Linie erhöhen
+    color: "yellow", // Optional: Farbe ändern, um die Route hervorzuheben
+  });
+
+  // Setze die aktuelle Polyline als die markierte Polyline
+  currentHighlightedPolyline = clickedPolyline;
+}
+
 // Punkte und Verbindungen laden
 fetch("/points")
   .then((response) => response.json())
@@ -69,7 +97,7 @@ fetch("/points")
     points.forEach((point) => {
       L.marker(point.coordinates)
         .addTo(map)
-        .bindPopup(`<b>${point.city}</b><br>${point.region}<br>IP: ${point.ip}`);
+        .bindPopup(`<b>${point.city}</b><br>${point.region}<br>IP: ${point.ip}<br>ASN: ${point.asn}`);
     });
 
     // Knotenliste anzeigen
@@ -79,16 +107,33 @@ fetch("/points")
     fetch("/routes")
       .then((response) => response.json())
       .then((routes) => {
-        routes.forEach((route) => {
-          const fromPoint = points.find((p) => p.ip === route.from);
-          const toPoint = points.find((p) => p.ip === route.to);
+        routes.forEach((route, index) => {
+          console.log("Processing route:", route);
 
-          if (fromPoint && toPoint) {
-            // Linie zwischen den Punkten zeichnen
-            L.polyline([fromPoint.coordinates, toPoint.coordinates], {
-              color: "red",
-              weight: 2,
-            }).addTo(map);
+          if (route.as_path && route.as_path.length > 1) {
+            const pathCoordinates = [];
+            const routeColor = getRandomColor(index);
+
+            route.as_path.forEach((asn) => {
+              const point = points.find(p => p.asn === asn);
+
+              if (point) {
+                pathCoordinates.push(point.coordinates);
+              } else {
+                console.log(`AS ${asn} wurde nicht gefunden.`);
+              }
+            });
+
+            if (pathCoordinates.length > 1) {
+              // Polyline erstellen und Klick-Event hinzufügen
+              const polyline = L.polyline(pathCoordinates, {
+                color: routeColor,
+                weight: 2,
+              }).addTo(map);
+
+              // Event Listener für Klick hinzufügen
+              polyline.on("click", handleRouteClick);
+            }
           }
         });
       });

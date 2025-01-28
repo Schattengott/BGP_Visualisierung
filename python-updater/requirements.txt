@@ -1,2 +1,8 @@
-# Beispiel
+# Basis
 requests
+json
+geoip2
+requests
+
+#Dev
+tqdm

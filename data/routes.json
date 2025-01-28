@@ -1,38 +1,2238 @@
 [
     {
-        "from": "192.168.1.1",
-        "to": "192.168.1.2"
+        "timestamp": "1735689600.034103",
+        "status": "A",
+        "ip": "206.24.210.80",
+        "start_system": "3561",
+        "target_system": null,
+        "prefix": "209.22.67.0/24",
+        "as_path": [
+            "3561",
+            "209",
+            "3356",
+            "721",
+            "721",
+            "27064",
+            "2046",
+            "2046",
+            "2046",
+            "2046"
+        ],
+        "additional_info": ""
     },
     {
-        "from": "192.168.1.2",
-        "to": "192.168.1.3"
+        "timestamp": "1735689600.034830",
+        "status": "A",
+        "ip": "202.73.40.45",
+        "start_system": "18106",
+        "target_system": null,
+        "prefix": "209.22.67.0/24",
+        "as_path": [
+            "18106",
+            "4657",
+            "9002",
+            "3356",
+            "721",
+            "721",
+            "27064",
+            "2046",
+            "2046",
+            "2046",
+            "2046"
+        ],
+        "additional_info": "4657:2000"
     },
     {
-        "from": "192.168.1.3",
-        "to": "192.168.1.4"
+        "timestamp": "1735689600.071219",
+        "status": "A",
+        "ip": "94.156.252.18",
+        "start_system": "34224",
+        "target_system": null,
+        "prefix": "177.36.143.0/24",
+        "as_path": [
+            "34224",
+            "270735",
+            "262401"
+        ],
+        "additional_info": "34224:334 64700:26162"
     },
     {
-        "from": "192.168.1.4",
-        "to": "192.168.1.5"
+        "timestamp": "1735689600.099016",
+        "status": "A",
+        "ip": "89.149.178.10",
+        "start_system": "3257",
+        "target_system": null,
+        "prefix": "209.22.67.0/24",
+        "as_path": [
+            "3257",
+            "3356",
+            "721",
+            "721",
+            "27064",
+            "2046",
+            "2046",
+            "2046",
+            "2046"
+        ],
+        "additional_info": "3257:8219 3257:30515 3257:50001 3257:53900 3257:53902"
     },
     {
-        "from": "192.168.1.5",
-        "to": "192.168.1.6"
+        "timestamp": "1735689600.099130",
+        "status": "A",
+        "ip": "89.149.178.10",
+        "start_system": "3257",
+        "target_system": null,
+        "prefix": "169.145.140.0/23",
+        "as_path": [
+            "3257",
+            "3356",
+            "14114",
+            "6979",
+            "6979",
+            "6979",
+            "6979",
+            "6979",
+            "6979"
+        ],
+        "additional_info": "3257:8219 3257:30515 3257:50001 3257:53900 3257:53902"
     },
     {
-        "from": "192.168.1.6",
-        "to": "192.168.1.7"
+        "timestamp": "1735689600.099376",
+        "status": "W",
+        "ip": "208.51.134.255",
+        "start_system": "3549",
+        "target_system": null,
+        "prefix": "172.224.230.0/24",
+        "as_path": null,
+        "additional_info": null
     },
     {
-        "from": "192.168.1.7",
-        "to": "192.168.1.8"
+        "timestamp": "1735689600.143877",
+        "status": "A",
+        "ip": "37.139.139.17",
+        "start_system": "57866",
+        "target_system": null,
+        "prefix": "169.145.140.0/23",
+        "as_path": [
+            "57866",
+            "5511",
+            "3356",
+            "14114",
+            "6979",
+            "6979",
+            "6979",
+            "6979",
+            "6979",
+            "6979"
+        ],
+        "additional_info": "5511:521 5511:666 5511:710 5511:10009 5511:30428 5511:30482 5511:30574 5511:30575 5511:40256 57866:100 65100:5511 65103:2 65104:31"
     },
     {
-        "from": "192.168.1.8",
-        "to": "192.168.1.9"
+        "timestamp": "1735689600.143983",
+        "status": "A",
+        "ip": "37.139.139.17",
+        "start_system": "57866",
+        "target_system": null,
+        "prefix": "209.22.67.0/24",
+        "as_path": [
+            "57866",
+            "5511",
+            "3356",
+            "721",
+            "721",
+            "27064",
+            "2046",
+            "2046",
+            "2046",
+            "2046"
+        ],
+        "additional_info": "5511:521 5511:666 5511:710 5511:10009 5511:30428 5511:30482 5511:30574 5511:30575 5511:40256 57866:100 65100:5511 65103:2 65104:31"
     },
     {
-        "from": "192.168.1.9",
-        "to": "192.168.1.10"
+        "timestamp": "1735689600.183539",
+        "status": "A",
+        "ip": "198.58.198.252",
+        "start_system": "1403",
+        "target_system": null,
+        "prefix": "169.145.140.0/23",
+        "as_path": [
+            "1403",
+            "174",
+            "3356",
+            "14114",
+            "6979",
+            "6979",
+            "6979",
+            "6979",
+            "6979",
+            "6979"
+        ],
+        "additional_info": "14032:174"
+    },
+    {
+        "timestamp": "1735689600.207930",
+        "status": "A",
+        "ip": "105.16.0.247",
+        "start_system": "37100",
+        "target_system": null,
+        "prefix": "209.22.67.0/24",
+        "as_path": [
+            "37100",
+            "3356",
+            "721",
+            "721",
+            "27064",
+            "2046",
+            "2046",
+            "2046",
+            "2046"
+        ],
+        "additional_info": "no-export"
+    },
+    {
+        "timestamp": "1735689600.208031",
+        "status": "A",
+        "ip": "105.16.0.247",
+        "start_system": "37100",
+        "target_system": null,
+        "prefix": "172.224.198.0/24",
+        "as_path": [
+            "37100",
+            "2914",
+            "20940",
+            "36183"
+        ],
+        "additional_info": "no-export"
+    },
+    {
+        "timestamp": "1735689600.208051",
+        "status": "A",
+        "ip": "105.16.0.247",
+        "start_system": "37100",
+        "target_system": null,
+        "prefix": "38.146.198.0/23",
+        "as_path": [
+            "37100",
+            "6762",
+            "3356",
+            "397533"
+        ],
+        "additional_info": "no-export"
+    },
+    {
+        "timestamp": "1735689600.249054",
+        "status": "A",
+        "ip": "140.192.8.16",
+        "start_system": "20130",
+        "target_system": null,
+        "prefix": "209.22.67.0/24",
+        "as_path": [
+            "20130",
+            "23352",
+            "2914",
+            "3356",
+            "721",
+            "721",
+            "27064",
+            "2046",
+            "2046",
+            "2046",
+            "2046"
+        ],
+        "additional_info": ""
+    },
+    {
+        "timestamp": "1735689600.249159",
+        "status": "A",
+        "ip": "140.192.8.16",
+        "start_system": "20130",
+        "target_system": null,
+        "prefix": "172.224.198.0/24",
+        "as_path": [
+            "20130",
+            "23352",
+            "174",
+            "20940",
+            "36183"
+        ],
+        "additional_info": ""
+    },
+    {
+        "timestamp": "1735689600.249418",
+        "status": "A",
+        "ip": "140.192.8.16",
+        "start_system": "20130",
+        "target_system": null,
+        "prefix": "172.226.148.0/24",
+        "as_path": [
+            "20130",
+            "23352",
+            "2914",
+            "20940",
+            "36183"
+        ],
+        "additional_info": ""
+    },
+    {
+        "timestamp": "1735689600.249418",
+        "status": "A",
+        "ip": "140.192.8.16",
+        "start_system": "20130",
+        "target_system": null,
+        "prefix": "172.226.208.0/24",
+        "as_path": [
+            "20130",
+            "23352",
+            "2914",
+            "20940",
+            "36183"
+        ],
+        "additional_info": ""
+    },
+    {
+        "timestamp": "1735689600.259917",
+        "status": "A",
+        "ip": "12.0.1.63",
+        "start_system": "7018",
+        "target_system": null,
+        "prefix": "38.146.198.0/23",
+        "as_path": [
+            "7018",
+            "3356",
+            "397533"
+        ],
+        "additional_info": "7018:5000 7018:34011"
+    },
+    {
+        "timestamp": "1735689600.267453",
+        "status": "A",
+        "ip": "202.73.40.45",
+        "start_system": "18106",
+        "target_system": null,
+        "prefix": "103.141.2.0/24",
+        "as_path": [
+            "18106",
+            "174",
+            "64049",
+            "10075",
+            "139901",
+            "139300"
+        ],
+        "additional_info": "174:2000"
+    },
+    {
+        "timestamp": "1735689600.267559",
+        "status": "A",
+        "ip": "202.73.40.45",
+        "start_system": "18106",
+        "target_system": null,
+        "prefix": "153.2.228.0/24",
+        "as_path": [
+            "18106",
+            "174",
+            "7018",
+            "12217"
+        ],
+        "additional_info": "174:2000"
+    },
+    {
+        "timestamp": "1735689600.267583",
+        "status": "A",
+        "ip": "202.73.40.45",
+        "start_system": "18106",
+        "target_system": null,
+        "prefix": "209.22.67.0/24",
+        "as_path": [
+            "18106",
+            "174",
+            "3356",
+            "721",
+            "721",
+            "27064",
+            "2046",
+            "2046",
+            "2046",
+            "2046"
+        ],
+        "additional_info": "174:2000"
+    },
+    {
+        "timestamp": "1735689600.267607",
+        "status": "A",
+        "ip": "202.73.40.45",
+        "start_system": "18106",
+        "target_system": null,
+        "prefix": "168.197.128.0/24",
+        "as_path": [
+            "18106",
+            "174",
+            "264997",
+            "52864",
+            "52864"
+        ],
+        "additional_info": "174:2000"
+    },
+    {
+        "timestamp": "1735689600.267629",
+        "status": "A",
+        "ip": "202.73.40.45",
+        "start_system": "18106",
+        "target_system": null,
+        "prefix": "195.33.232.0/24",
+        "as_path": [
+            "18106",
+            "174",
+            "3356",
+            "34984"
+        ],
+        "additional_info": "174:2000"
+    },
+    {
+        "timestamp": "1735689600.267646",
+        "status": "A",
+        "ip": "202.73.40.45",
+        "start_system": "18106",
+        "target_system": null,
+        "prefix": "209.22.67.0/24",
+        "as_path": [
+            "18106",
+            "2914",
+            "3356",
+            "721",
+            "721",
+            "27064",
+            "2046",
+            "2046",
+            "2046",
+            "2046"
+        ],
+        "additional_info": "2914:2000"
+    },
+    {
+        "timestamp": "1735689600.267658",
+        "status": "A",
+        "ip": "202.73.40.45",
+        "start_system": "18106",
+        "target_system": null,
+        "prefix": "172.226.208.0/24",
+        "as_path": [
+            "18106",
+            "2914",
+            "20940",
+            "36183"
+        ],
+        "additional_info": "2914:2000"
+    },
+    {
+        "timestamp": "1735689600.267658",
+        "status": "A",
+        "ip": "202.73.40.45",
+        "start_system": "18106",
+        "target_system": null,
+        "prefix": "172.226.148.0/24",
+        "as_path": [
+            "18106",
+            "2914",
+            "20940",
+            "36183"
+        ],
+        "additional_info": "2914:2000"
+    },
+    {
+        "timestamp": "1735689600.281987",
+        "status": "A",
+        "ip": "94.156.252.18",
+        "start_system": "34224",
+        "target_system": null,
+        "prefix": "38.146.198.0/23",
+        "as_path": [
+            "34224",
+            "3257",
+            "3356",
+            "397533"
+        ],
+        "additional_info": "34224:333"
+    },
+    {
+        "timestamp": "1735689600.345694",
+        "status": "W",
+        "ip": "137.164.16.84",
+        "start_system": "2152",
+        "target_system": null,
+        "prefix": "62.113.88.0/24",
+        "as_path": null,
+        "additional_info": null
+    },
+    {
+        "timestamp": "1735689600.345694",
+        "status": "W",
+        "ip": "137.164.16.84",
+        "start_system": "2152",
+        "target_system": null,
+        "prefix": "187.62.231.0/24",
+        "as_path": null,
+        "additional_info": null
+    },
+    {
+        "timestamp": "1735689600.345694",
+        "status": "W",
+        "ip": "137.164.16.84",
+        "start_system": "2152",
+        "target_system": null,
+        "prefix": "38.146.198.0/23",
+        "as_path": null,
+        "additional_info": null
+    },
+    {
+        "timestamp": "1735689600.345694",
+        "status": "W",
+        "ip": "137.164.16.84",
+        "start_system": "2152",
+        "target_system": null,
+        "prefix": "172.224.230.0/24",
+        "as_path": null,
+        "additional_info": null
+    },
+    {
+        "timestamp": "1735689600.345694",
+        "status": "A",
+        "ip": "137.164.16.84",
+        "start_system": "2152",
+        "target_system": null,
+        "prefix": "138.99.97.0/24",
+        "as_path": [
+            "2152",
+            "3356",
+            "53013",
+            "28370",
+            "28370",
+            "28657"
+        ],
+        "additional_info": "2152:65495 2152:65497 2152:65499 2152:65511 3356:5 3356:22 3356:100 3356:123 3356:800 3356:903 3356:2190 53013:1000 65000:13414"
+    },
+    {
+        "timestamp": "1735689600.346854",
+        "status": "W",
+        "ip": "89.149.178.10",
+        "start_system": "3257",
+        "target_system": null,
+        "prefix": "81.90.139.0/24",
+        "as_path": null,
+        "additional_info": null
+    },
+    {
+        "timestamp": "1735689600.346854",
+        "status": "W",
+        "ip": "89.149.178.10",
+        "start_system": "3257",
+        "target_system": null,
+        "prefix": "81.90.132.0/24",
+        "as_path": null,
+        "additional_info": null
+    },
+    {
+        "timestamp": "1735689600.346854",
+        "status": "W",
+        "ip": "89.149.178.10",
+        "start_system": "3257",
+        "target_system": null,
+        "prefix": "81.90.133.0/24",
+        "as_path": null,
+        "additional_info": null
+    },
+    {
+        "timestamp": "1735689600.346916",
+        "status": "A",
+        "ip": "89.149.178.10",
+        "start_system": "3257",
+        "target_system": null,
+        "prefix": "62.113.88.0/24",
+        "as_path": [
+            "3257",
+            "3356",
+            "8359"
+        ],
+        "additional_info": "3257:8883 3257:30073 3257:50001 3257:54300 3257:54301"
+    },
+    {
+        "timestamp": "1735689600.346979",
+        "status": "A",
+        "ip": "89.149.178.10",
+        "start_system": "3257",
+        "target_system": null,
+        "prefix": "62.113.88.0/24",
+        "as_path": [
+            "3257",
+            "3356",
+            "8359"
+        ],
+        "additional_info": "3257:8223 3257:30046 3257:50002 3257:51100 3257:51101"
+    },
+    {
+        "timestamp": "1735689600.346992",
+        "status": "A",
+        "ip": "89.149.178.10",
+        "start_system": "3257",
+        "target_system": null,
+        "prefix": "81.90.132.0/24",
+        "as_path": [
+            "3257",
+            "174",
+            "20473",
+            "25048"
+        ],
+        "additional_info": "3257:8838 3257:30516 3257:50003 3257:56600 3257:56601"
+    },
+    {
+        "timestamp": "1735689600.346992",
+        "status": "A",
+        "ip": "89.149.178.10",
+        "start_system": "3257",
+        "target_system": null,
+        "prefix": "81.90.139.0/24",
+        "as_path": [
+            "3257",
+            "174",
+            "20473",
+            "25048"
+        ],
+        "additional_info": "3257:8838 3257:30516 3257:50003 3257:56600 3257:56601"
+    },
+    {
+        "timestamp": "1735689600.346992",
+        "status": "A",
+        "ip": "89.149.178.10",
+        "start_system": "3257",
+        "target_system": null,
+        "prefix": "81.90.133.0/24",
+        "as_path": [
+            "3257",
+            "174",
+            "20473",
+            "25048"
+        ],
+        "additional_info": "3257:8838 3257:30516 3257:50003 3257:56600 3257:56601"
+    },
+    {
+        "timestamp": "1735689600.446689",
+        "status": "W",
+        "ip": "129.250.1.71",
+        "start_system": "2914",
+        "target_system": null,
+        "prefix": "172.224.230.0/24",
+        "as_path": null,
+        "additional_info": null
+    },
+    {
+        "timestamp": "1735689600.446689",
+        "status": "W",
+        "ip": "129.250.1.71",
+        "start_system": "2914",
+        "target_system": null,
+        "prefix": "187.62.231.0/24",
+        "as_path": null,
+        "additional_info": null
+    },
+    {
+        "timestamp": "1735689600.446689",
+        "status": "W",
+        "ip": "129.250.1.71",
+        "start_system": "2914",
+        "target_system": null,
+        "prefix": "143.255.59.0/24",
+        "as_path": null,
+        "additional_info": null
+    },
+    {
+        "timestamp": "1735689600.446766",
+        "status": "A",
+        "ip": "129.250.1.71",
+        "start_system": "2914",
+        "target_system": null,
+        "prefix": "169.145.140.0/23",
+        "as_path": [
+            "2914",
+            "3356",
+            "14114",
+            "6979",
+            "6979",
+            "6979",
+            "6979",
+            "6979",
+            "6979"
+        ],
+        "additional_info": "2914:420 2914:1409 2914:2403 2914:3400"
+    },
+    {
+        "timestamp": "1735689600.446811",
+        "status": "A",
+        "ip": "129.250.1.71",
+        "start_system": "2914",
+        "target_system": null,
+        "prefix": "172.226.148.0/24",
+        "as_path": [
+            "2914",
+            "20940",
+            "36183"
+        ],
+        "additional_info": "2914:410 2914:1203 2914:2201 2914:3200"
+    },
+    {
+        "timestamp": "1735689600.446811",
+        "status": "A",
+        "ip": "129.250.1.71",
+        "start_system": "2914",
+        "target_system": null,
+        "prefix": "172.226.208.0/24",
+        "as_path": [
+            "2914",
+            "20940",
+            "36183"
+        ],
+        "additional_info": "2914:410 2914:1203 2914:2201 2914:3200"
+    },
+    {
+        "timestamp": "1735689600.446845",
+        "status": "A",
+        "ip": "129.250.1.71",
+        "start_system": "2914",
+        "target_system": null,
+        "prefix": "104.206.88.0/22",
+        "as_path": [
+            "2914",
+            "62904",
+            "7819",
+            "62904"
+        ],
+        "additional_info": "2914:410 2914:1004 2914:2000 2914:3000 7819:999 24115:62904 24115:65023 62904:300 62904:62904"
+    },
+    {
+        "timestamp": "1735689600.446943",
+        "status": "A",
+        "ip": "129.250.1.71",
+        "start_system": "2914",
+        "target_system": null,
+        "prefix": "209.22.67.0/24",
+        "as_path": [
+            "2914",
+            "3356",
+            "721",
+            "721",
+            "27064",
+            "2046",
+            "2046",
+            "2046",
+            "2046"
+        ],
+        "additional_info": "2914:420 2914:1409 2914:2403 2914:3400"
+    },
+    {
+        "timestamp": "1735689600.464507",
+        "status": "A",
+        "ip": "94.156.252.18",
+        "start_system": "34224",
+        "target_system": null,
+        "prefix": "172.226.208.0/24",
+        "as_path": [
+            "34224",
+            "3356",
+            "174",
+            "20940",
+            "36183"
+        ],
+        "additional_info": "34224:333"
+    },
+    {
+        "timestamp": "1735689600.464591",
+        "status": "A",
+        "ip": "94.156.252.18",
+        "start_system": "34224",
+        "target_system": null,
+        "prefix": "172.224.230.0/24",
+        "as_path": [
+            "34224",
+            "6453",
+            "174",
+            "37271",
+            "20940",
+            "36183"
+        ],
+        "additional_info": "34224:333"
+    },
+    {
+        "timestamp": "1735689600.477655",
+        "status": "A",
+        "ip": "198.58.198.252",
+        "start_system": "1403",
+        "target_system": null,
+        "prefix": "130.137.150.0/24",
+        "as_path": [
+            "1403",
+            "6461",
+            "16509"
+        ],
+        "additional_info": "1403:6461"
+    },
+    {
+        "timestamp": "1735689600.477743",
+        "status": "A",
+        "ip": "198.58.198.252",
+        "start_system": "1403",
+        "target_system": null,
+        "prefix": "197.139.40.0/24",
+        "as_path": [
+            "1403",
+            "577",
+            "2914",
+            "36944",
+            "36914"
+        ],
+        "additional_info": "1403:140"
+    },
+    {
+        "timestamp": "1735689600.480245",
+        "status": "A",
+        "ip": "140.192.8.16",
+        "start_system": "20130",
+        "target_system": null,
+        "prefix": "130.137.150.0/24",
+        "as_path": [
+            "20130",
+            "6939",
+            "1299",
+            "6453",
+            "16509"
+        ],
+        "additional_info": ""
+    },
+    {
+        "timestamp": "1735689600.480995",
+        "status": "A",
+        "ip": "105.16.0.247",
+        "start_system": "37100",
+        "target_system": null,
+        "prefix": "172.224.198.0/24",
+        "as_path": [
+            "37100",
+            "3356",
+            "20940",
+            "36183"
+        ],
+        "additional_info": "no-export"
+    },
+    {
+        "timestamp": "1735689600.481052",
+        "status": "A",
+        "ip": "105.16.0.247",
+        "start_system": "37100",
+        "target_system": null,
+        "prefix": "170.150.183.0/24",
+        "as_path": [
+            "37100",
+            "6762",
+            "23520",
+            "52468",
+            "27932",
+            "264719"
+        ],
+        "additional_info": "no-export"
+    },
+    {
+        "timestamp": "1735689600.522902",
+        "status": "W",
+        "ip": "12.0.1.63",
+        "start_system": "7018",
+        "target_system": null,
+        "prefix": "38.146.198.0/23",
+        "as_path": null,
+        "additional_info": null
+    },
+    {
+        "timestamp": "1735689600.640042",
+        "status": "W",
+        "ip": "206.24.210.80",
+        "start_system": "3561",
+        "target_system": null,
+        "prefix": "130.137.150.0/24",
+        "as_path": null,
+        "additional_info": null
+    },
+    {
+        "timestamp": "1735689600.640042",
+        "status": "W",
+        "ip": "206.24.210.80",
+        "start_system": "3561",
+        "target_system": null,
+        "prefix": "172.224.231.0/24",
+        "as_path": null,
+        "additional_info": null
+    },
+    {
+        "timestamp": "1735689600.640042",
+        "status": "W",
+        "ip": "206.24.210.80",
+        "start_system": "3561",
+        "target_system": null,
+        "prefix": "172.226.70.0/24",
+        "as_path": null,
+        "additional_info": null
+    },
+    {
+        "timestamp": "1735689600.646178",
+        "status": "A",
+        "ip": "137.164.16.84",
+        "start_system": "2152",
+        "target_system": null,
+        "prefix": "130.137.150.0/24",
+        "as_path": [
+            "2152",
+            "3356",
+            "174",
+            "16509"
+        ],
+        "additional_info": "2152:65493 2152:65497 2152:65499 2152:65511 3356:3 3356:22 3356:86 3356:575 3356:666 3356:903 3356:2011"
+    },
+    {
+        "timestamp": "1735689600.647122",
+        "status": "A",
+        "ip": "94.156.252.18",
+        "start_system": "34224",
+        "target_system": null,
+        "prefix": "206.119.35.0/24",
+        "as_path": [
+            "34224",
+            "6453",
+            "140224"
+        ],
+        "additional_info": "34224:333"
+    },
+    {
+        "timestamp": "1735689600.647122",
+        "status": "A",
+        "ip": "94.156.252.18",
+        "start_system": "34224",
+        "target_system": null,
+        "prefix": "206.119.36.0/24",
+        "as_path": [
+            "34224",
+            "6453",
+            "140224"
+        ],
+        "additional_info": "34224:333"
+    },
+    {
+        "timestamp": "1735689600.647198",
+        "status": "A",
+        "ip": "94.156.252.18",
+        "start_system": "34224",
+        "target_system": null,
+        "prefix": "206.119.55.0/24",
+        "as_path": [
+            "34224",
+            "6453",
+            "140224"
+        ],
+        "additional_info": "34224:333"
+    },
+    {
+        "timestamp": "1735689600.647216",
+        "status": "A",
+        "ip": "94.156.252.18",
+        "start_system": "34224",
+        "target_system": null,
+        "prefix": "190.83.91.0/24",
+        "as_path": [
+            "34224",
+            "262401",
+            "270352"
+        ],
+        "additional_info": "34224:334 64700:26162"
+    },
+    {
+        "timestamp": "1735689600.647233",
+        "status": "A",
+        "ip": "94.156.252.18",
+        "start_system": "34224",
+        "target_system": null,
+        "prefix": "172.226.208.0/24",
+        "as_path": [
+            "34224",
+            "3356",
+            "6453",
+            "20940",
+            "36183"
+        ],
+        "additional_info": "34224:333"
+    },
+    {
+        "timestamp": "1735689600.674416",
+        "status": "A",
+        "ip": "37.139.139.17",
+        "start_system": "57866",
+        "target_system": null,
+        "prefix": "62.113.88.0/24",
+        "as_path": [
+            "57866",
+            "6830",
+            "3356",
+            "8359"
+        ],
+        "additional_info": "6830:17000 6830:17430 6830:23001 6830:33123 57866:100 65100:6830 65103:2 65104:31"
+    },
+    {
+        "timestamp": "1735689600.689939",
+        "status": "A",
+        "ip": "64.71.137.241",
+        "start_system": "6939",
+        "target_system": null,
+        "prefix": "187.62.231.0/24",
+        "as_path": [
+            "6939",
+            "264409",
+            "61832",
+            "268982",
+            "262663"
+        ],
+        "additional_info": ""
+    },
+    {
+        "timestamp": "1735689600.692934",
+        "status": "A",
+        "ip": "89.149.178.10",
+        "start_system": "3257",
+        "target_system": null,
+        "prefix": "81.90.139.0/24",
+        "as_path": [
+            "3257",
+            "174",
+            "20473",
+            "25048"
+        ],
+        "additional_info": "3257:8195 3257:30625 3257:50001 3257:54200 3257:54201"
+    },
+    {
+        "timestamp": "1735689600.692934",
+        "status": "A",
+        "ip": "89.149.178.10",
+        "start_system": "3257",
+        "target_system": null,
+        "prefix": "81.90.132.0/24",
+        "as_path": [
+            "3257",
+            "174",
+            "20473",
+            "25048"
+        ],
+        "additional_info": "3257:8195 3257:30625 3257:50001 3257:54200 3257:54201"
+    },
+    {
+        "timestamp": "1735689600.692934",
+        "status": "A",
+        "ip": "89.149.178.10",
+        "start_system": "3257",
+        "target_system": null,
+        "prefix": "81.90.133.0/24",
+        "as_path": [
+            "3257",
+            "174",
+            "20473",
+            "25048"
+        ],
+        "additional_info": "3257:8195 3257:30625 3257:50001 3257:54200 3257:54201"
+    },
+    {
+        "timestamp": "1735689600.693028",
+        "status": "A",
+        "ip": "89.149.178.10",
+        "start_system": "3257",
+        "target_system": null,
+        "prefix": "38.146.198.0/23",
+        "as_path": [
+            "3257",
+            "3356",
+            "397533"
+        ],
+        "additional_info": "3257:8223 3257:30046 3257:50002 3257:51100 3257:51101"
+    },
+    {
+        "timestamp": "1735689617.677881",
+        "status": "A",
+        "ip": "105.16.0.247",
+        "start_system": "37100",
+        "target_system": null,
+        "prefix": "172.226.208.0/24",
+        "as_path": [
+            "37100",
+            "6453",
+            "20940",
+            "36183"
+        ],
+        "additional_info": "no-export"
+    },
+    {
+        "timestamp": "1735689617.677947",
+        "status": "A",
+        "ip": "105.16.0.247",
+        "start_system": "37100",
+        "target_system": null,
+        "prefix": "172.226.148.0/24",
+        "as_path": [
+            "37100",
+            "2914",
+            "20940",
+            "36183"
+        ],
+        "additional_info": "no-export"
+    },
+    {
+        "timestamp": "1735689617.677962",
+        "status": "A",
+        "ip": "105.16.0.247",
+        "start_system": "37100",
+        "target_system": null,
+        "prefix": "172.226.148.0/24",
+        "as_path": [
+            "37100",
+            "3356",
+            "20940",
+            "36183"
+        ],
+        "additional_info": "no-export"
+    },
+    {
+        "timestamp": "1735689617.677974",
+        "status": "A",
+        "ip": "105.16.0.247",
+        "start_system": "37100",
+        "target_system": null,
+        "prefix": "172.224.198.0/24",
+        "as_path": [
+            "37100",
+            "2914",
+            "20940",
+            "36183"
+        ],
+        "additional_info": "no-export"
+    },
+    {
+        "timestamp": "1735689617.677988",
+        "status": "A",
+        "ip": "105.16.0.247",
+        "start_system": "37100",
+        "target_system": null,
+        "prefix": "172.226.148.0/24",
+        "as_path": [
+            "37100",
+            "6762",
+            "20940",
+            "36183"
+        ],
+        "additional_info": "no-export"
+    },
+    {
+        "timestamp": "1735689617.677988",
+        "status": "A",
+        "ip": "105.16.0.247",
+        "start_system": "37100",
+        "target_system": null,
+        "prefix": "172.226.208.0/24",
+        "as_path": [
+            "37100",
+            "6762",
+            "20940",
+            "36183"
+        ],
+        "additional_info": "no-export"
+    },
+    {
+        "timestamp": "1735689617.677998",
+        "status": "A",
+        "ip": "105.16.0.247",
+        "start_system": "37100",
+        "target_system": null,
+        "prefix": "104.206.88.0/22",
+        "as_path": [
+            "37100",
+            "3257",
+            "2914",
+            "62904"
+        ],
+        "additional_info": "no-export"
+    },
+    {
+        "timestamp": "1735689617.678015",
+        "status": "A",
+        "ip": "105.16.0.247",
+        "start_system": "37100",
+        "target_system": null,
+        "prefix": "62.113.88.0/24",
+        "as_path": [
+            "37100",
+            "8359"
+        ],
+        "additional_info": "no-export"
+    },
+    {
+        "timestamp": "1735689617.678035",
+        "status": "A",
+        "ip": "105.16.0.247",
+        "start_system": "37100",
+        "target_system": null,
+        "prefix": "187.62.231.0/24",
+        "as_path": [
+            "37100",
+            "264409",
+            "61832",
+            "268982",
+            "262663"
+        ],
+        "additional_info": "no-export"
+    },
+    {
+        "timestamp": "1735689617.678049",
+        "status": "A",
+        "ip": "105.16.0.247",
+        "start_system": "37100",
+        "target_system": null,
+        "prefix": "172.226.70.0/24",
+        "as_path": [
+            "37100",
+            "37271",
+            "20940",
+            "36183"
+        ],
+        "additional_info": "no-export"
+    },
+    {
+        "timestamp": "1735689617.678049",
+        "status": "A",
+        "ip": "105.16.0.247",
+        "start_system": "37100",
+        "target_system": null,
+        "prefix": "172.224.231.0/24",
+        "as_path": [
+            "37100",
+            "37271",
+            "20940",
+            "36183"
+        ],
+        "additional_info": "no-export"
+    },
+    {
+        "timestamp": "1735689617.678072",
+        "status": "A",
+        "ip": "105.16.0.247",
+        "start_system": "37100",
+        "target_system": null,
+        "prefix": "172.224.198.0/24",
+        "as_path": [
+            "37100",
+            "3356",
+            "20940",
+            "36183"
+        ],
+        "additional_info": "no-export"
+    },
+    {
+        "timestamp": "1735689617.678083",
+        "status": "A",
+        "ip": "12.0.1.63",
+        "start_system": "7018",
+        "target_system": null,
+        "prefix": "130.137.150.0/24",
+        "as_path": [
+            "7018",
+            "174",
+            "16509"
+        ],
+        "additional_info": "7018:5000 7018:37232"
+    },
+    {
+        "timestamp": "1735689617.678101",
+        "status": "A",
+        "ip": "12.0.1.63",
+        "start_system": "7018",
+        "target_system": null,
+        "prefix": "138.99.97.0/24",
+        "as_path": [
+            "7018",
+            "3356",
+            "53013",
+            "28370",
+            "28370",
+            "28657"
+        ],
+        "additional_info": "7018:5000 7018:37232"
+    },
+    {
+        "timestamp": "1735689617.678120",
+        "status": "W",
+        "ip": "12.0.1.63",
+        "start_system": "7018",
+        "target_system": null,
+        "prefix": "62.113.88.0/24",
+        "as_path": null,
+        "additional_info": null
+    },
+    {
+        "timestamp": "1735689617.678125",
+        "status": "A",
+        "ip": "12.0.1.63",
+        "start_system": "7018",
+        "target_system": null,
+        "prefix": "187.62.231.0/24",
+        "as_path": [
+            "7018",
+            "6762",
+            "264409",
+            "61832",
+            "268982",
+            "262663"
+        ],
+        "additional_info": "7018:5000 7018:38000"
+    },
+    {
+        "timestamp": "1735689617.678141",
+        "status": "A",
+        "ip": "12.0.1.63",
+        "start_system": "7018",
+        "target_system": null,
+        "prefix": "104.206.88.0/22",
+        "as_path": [
+            "7018",
+            "2914",
+            "62904"
+        ],
+        "additional_info": "7018:5000 7018:31000"
+    },
+    {
+        "timestamp": "1735689617.678154",
+        "status": "A",
+        "ip": "12.0.1.63",
+        "start_system": "7018",
+        "target_system": null,
+        "prefix": "177.36.143.0/24",
+        "as_path": [
+            "7018",
+            "2914",
+            "268624",
+            "262401"
+        ],
+        "additional_info": "7018:5000 7018:37232"
+    },
+    {
+        "timestamp": "1735689617.678170",
+        "status": "A",
+        "ip": "12.0.1.63",
+        "start_system": "7018",
+        "target_system": null,
+        "prefix": "84.205.76.0/24",
+        "as_path": [
+            "7018",
+            "1299",
+            "6233",
+            "12654"
+        ],
+        "additional_info": "7018:5000 7018:37232"
+    },
+    {
+        "timestamp": "1735689617.678185",
+        "status": "A",
+        "ip": "12.0.1.63",
+        "start_system": "7018",
+        "target_system": null,
+        "prefix": "84.205.69.0/24",
+        "as_path": [
+            "7018",
+            "1299",
+            "48362",
+            "12654"
+        ],
+        "additional_info": "7018:5000 7018:37232"
+    },
+    {
+        "timestamp": "1735689617.678200",
+        "status": "A",
+        "ip": "12.0.1.63",
+        "start_system": "7018",
+        "target_system": null,
+        "prefix": "84.205.64.0/24",
+        "as_path": [
+            "7018",
+            "1299",
+            "50304",
+            "12654"
+        ],
+        "additional_info": "7018:5000 7018:37232"
+    },
+    {
+        "timestamp": "1735689617.678221",
+        "status": "A",
+        "ip": "12.0.1.63",
+        "start_system": "7018",
+        "target_system": null,
+        "prefix": "62.113.88.0/24",
+        "as_path": [
+            "7018",
+            "3356",
+            "8359"
+        ],
+        "additional_info": "7018:5000 7018:37232"
+    },
+    {
+        "timestamp": "1735689617.678238",
+        "status": "A",
+        "ip": "94.156.252.18",
+        "start_system": "34224",
+        "target_system": null,
+        "prefix": "177.36.156.0/24",
+        "as_path": [
+            "34224",
+            "268624",
+            "262401"
+        ],
+        "additional_info": "34224:334 64700:26162"
+    },
+    {
+        "timestamp": "1735689617.678255",
+        "status": "A",
+        "ip": "94.156.252.18",
+        "start_system": "34224",
+        "target_system": null,
+        "prefix": "187.62.231.0/24",
+        "as_path": [
+            "34224",
+            "264409",
+            "61832",
+            "268982",
+            "262663"
+        ],
+        "additional_info": "34224:334 64700:6695 64800:3076"
+    },
+    {
+        "timestamp": "1735689617.678271",
+        "status": "A",
+        "ip": "94.156.252.18",
+        "start_system": "34224",
+        "target_system": null,
+        "prefix": "177.36.142.0/24",
+        "as_path": [
+            "34224",
+            "268624",
+            "262401"
+        ],
+        "additional_info": "34224:334 64700:26162"
+    },
+    {
+        "timestamp": "1735689617.678281",
+        "status": "A",
+        "ip": "94.156.252.18",
+        "start_system": "34224",
+        "target_system": null,
+        "prefix": "187.49.209.0/24",
+        "as_path": [
+            "34224",
+            "262540",
+            "28154"
+        ],
+        "additional_info": "34224:334 64700:26162"
+    },
+    {
+        "timestamp": "1735689617.678298",
+        "status": "A",
+        "ip": "94.156.252.18",
+        "start_system": "34224",
+        "target_system": null,
+        "prefix": "172.226.208.0/24",
+        "as_path": [
+            "34224",
+            "3356",
+            "20940",
+            "36183"
+        ],
+        "additional_info": "34224:333"
+    },
+    {
+        "timestamp": "1735689617.678313",
+        "status": "A",
+        "ip": "94.156.252.18",
+        "start_system": "34224",
+        "target_system": null,
+        "prefix": "177.36.142.0/24",
+        "as_path": [
+            "34224",
+            "268624",
+            "262401"
+        ],
+        "additional_info": "34224:334 64700:26162"
+    },
+    {
+        "timestamp": "1735689617.678319",
+        "status": "A",
+        "ip": "94.156.252.18",
+        "start_system": "34224",
+        "target_system": null,
+        "prefix": "187.49.209.0/24",
+        "as_path": [
+            "34224",
+            "262540",
+            "28154"
+        ],
+        "additional_info": "34224:334 64700:26162"
+    },
+    {
+        "timestamp": "1735689617.678324",
+        "status": "A",
+        "ip": "94.156.252.18",
+        "start_system": "34224",
+        "target_system": null,
+        "prefix": "84.205.69.0/24",
+        "as_path": [
+            "34224",
+            "12654"
+        ],
+        "additional_info": "34224:334 64700:61968"
+    },
+    {
+        "timestamp": "1735689617.678336",
+        "status": "A",
+        "ip": "94.156.252.18",
+        "start_system": "34224",
+        "target_system": null,
+        "prefix": "84.205.76.0/24",
+        "as_path": [
+            "34224",
+            "5511",
+            "60068",
+            "57695",
+            "12654"
+        ],
+        "additional_info": "34224:333"
+    },
+    {
+        "timestamp": "1735689617.678347",
+        "status": "A",
+        "ip": "94.156.252.18",
+        "start_system": "34224",
+        "target_system": null,
+        "prefix": "172.224.231.0/24",
+        "as_path": [
+            "34224",
+            "5511",
+            "20940",
+            "36183"
+        ],
+        "additional_info": "34224:333"
+    },
+    {
+        "timestamp": "1735689617.678347",
+        "status": "A",
+        "ip": "94.156.252.18",
+        "start_system": "34224",
+        "target_system": null,
+        "prefix": "172.226.70.0/24",
+        "as_path": [
+            "34224",
+            "5511",
+            "20940",
+            "36183"
+        ],
+        "additional_info": "34224:333"
+    },
+    {
+        "timestamp": "1735689617.678363",
+        "status": "A",
+        "ip": "206.24.210.80",
+        "start_system": "3561",
+        "target_system": null,
+        "prefix": "130.137.150.0/24",
+        "as_path": [
+            "3561",
+            "209",
+            "3356",
+            "174",
+            "16509"
+        ],
+        "additional_info": ""
+    },
+    {
+        "timestamp": "1735689617.678379",
+        "status": "W",
+        "ip": "206.24.210.80",
+        "start_system": "3561",
+        "target_system": null,
+        "prefix": "62.113.88.0/24",
+        "as_path": null,
+        "additional_info": null
+    },
+    {
+        "timestamp": "1735689617.678379",
+        "status": "W",
+        "ip": "206.24.210.80",
+        "start_system": "3561",
+        "target_system": null,
+        "prefix": "172.224.230.0/24",
+        "as_path": null,
+        "additional_info": null
+    },
+    {
+        "timestamp": "1735689617.678379",
+        "status": "W",
+        "ip": "206.24.210.80",
+        "start_system": "3561",
+        "target_system": null,
+        "prefix": "38.146.198.0/23",
+        "as_path": null,
+        "additional_info": null
+    },
+    {
+        "timestamp": "1735689617.678394",
+        "status": "A",
+        "ip": "206.24.210.80",
+        "start_system": "3561",
+        "target_system": null,
+        "prefix": "177.36.143.0/24",
+        "as_path": [
+            "3561",
+            "209",
+            "3356",
+            "2914",
+            "268624",
+            "262401"
+        ],
+        "additional_info": ""
+    },
+    {
+        "timestamp": "1735689617.678409",
+        "status": "A",
+        "ip": "206.24.210.80",
+        "start_system": "3561",
+        "target_system": null,
+        "prefix": "62.113.88.0/24",
+        "as_path": [
+            "3561",
+            "209",
+            "3356",
+            "8359"
+        ],
+        "additional_info": ""
+    },
+    {
+        "timestamp": "1735689617.678417",
+        "status": "A",
+        "ip": "206.24.210.80",
+        "start_system": "3561",
+        "target_system": null,
+        "prefix": "84.205.64.0/24",
+        "as_path": [
+            "3561",
+            "209",
+            "3356",
+            "6939",
+            "61218",
+            "12654"
+        ],
+        "additional_info": ""
+    },
+    {
+        "timestamp": "1735689617.678427",
+        "status": "A",
+        "ip": "206.24.210.80",
+        "start_system": "3561",
+        "target_system": null,
+        "prefix": "177.36.142.0/24",
+        "as_path": [
+            "3561",
+            "209",
+            "3356",
+            "268624",
+            "262401"
+        ],
+        "additional_info": ""
+    },
+    {
+        "timestamp": "1735689617.678427",
+        "status": "A",
+        "ip": "206.24.210.80",
+        "start_system": "3561",
+        "target_system": null,
+        "prefix": "177.36.156.0/24",
+        "as_path": [
+            "3561",
+            "209",
+            "3356",
+            "268624",
+            "262401"
+        ],
+        "additional_info": ""
+    },
+    {
+        "timestamp": "1735689617.678447",
+        "status": "A",
+        "ip": "206.24.210.80",
+        "start_system": "3561",
+        "target_system": null,
+        "prefix": "84.205.76.0/24",
+        "as_path": [
+            "3561",
+            "209",
+            "3356",
+            "1299",
+            "6233",
+            "12654"
+        ],
+        "additional_info": ""
+    },
+    {
+        "timestamp": "1735689617.678457",
+        "status": "A",
+        "ip": "206.24.210.80",
+        "start_system": "3561",
+        "target_system": null,
+        "prefix": "93.175.153.0/24",
+        "as_path": [
+            "3561",
+            "209",
+            "3356",
+            "12956",
+            "60068",
+            "57695",
+            "12654"
+        ],
+        "additional_info": ""
+    },
+    {
+        "timestamp": "1735689617.678467",
+        "status": "A",
+        "ip": "206.24.210.80",
+        "start_system": "3561",
+        "target_system": null,
+        "prefix": "84.205.66.0/24",
+        "as_path": [
+            "3561",
+            "209",
+            "3356",
+            "6939",
+            "399580",
+            "12654"
+        ],
+        "additional_info": ""
+    },
+    {
+        "timestamp": "1735689617.678478",
+        "status": "A",
+        "ip": "206.24.210.80",
+        "start_system": "3561",
+        "target_system": null,
+        "prefix": "84.205.75.0/24",
+        "as_path": [
+            "3561",
+            "209",
+            "3356",
+            "6762",
+            "12654"
+        ],
+        "additional_info": ""
+    },
+    {
+        "timestamp": "1735689617.678495",
+        "status": "A",
+        "ip": "140.192.8.16",
+        "start_system": "20130",
+        "target_system": null,
+        "prefix": "187.62.231.0/24",
+        "as_path": [
+            "20130",
+            "6939",
+            "264409",
+            "61832",
+            "268982",
+            "262663"
+        ],
+        "additional_info": ""
+    },
+    {
+        "timestamp": "1735689617.678568",
+        "status": "A",
+        "ip": "140.192.8.16",
+        "start_system": "20130",
+        "target_system": null,
+        "prefix": "143.255.59.0/24",
+        "as_path": [
+            "20130",
+            "23352",
+            "174",
+            "3356",
+            "17072",
+            "33182"
+        ],
+        "additional_info": ""
+    },
+    {
+        "timestamp": "1735689617.678585",
+        "status": "A",
+        "ip": "140.192.8.16",
+        "start_system": "20130",
+        "target_system": null,
+        "prefix": "104.206.88.0/22",
+        "as_path": [
+            "20130",
+            "23352",
+            "3257",
+            "2914",
+            "62904"
+        ],
+        "additional_info": ""
+    },
+    {
+        "timestamp": "1735689617.678594",
+        "status": "A",
+        "ip": "140.192.8.16",
+        "start_system": "20130",
+        "target_system": null,
+        "prefix": "177.36.156.0/24",
+        "as_path": [
+            "20130",
+            "23352",
+            "2914",
+            "268624",
+            "262401"
+        ],
+        "additional_info": ""
+    },
+    {
+        "timestamp": "1735689617.678604",
+        "status": "A",
+        "ip": "140.192.8.16",
+        "start_system": "20130",
+        "target_system": null,
+        "prefix": "160.22.180.0/23",
+        "as_path": [
+            "20130",
+            "23352",
+            "2914",
+            "9304",
+            "142108"
+        ],
+        "additional_info": ""
+    },
+    {
+        "timestamp": "1735689617.678617",
+        "status": "A",
+        "ip": "140.192.8.16",
+        "start_system": "20130",
+        "target_system": null,
+        "prefix": "84.205.76.0/24",
+        "as_path": [
+            "20130",
+            "6939",
+            "1299",
+            "6233",
+            "12654"
+        ],
+        "additional_info": ""
+    },
+    {
+        "timestamp": "1735689617.678626",
+        "status": "A",
+        "ip": "140.192.8.16",
+        "start_system": "20130",
+        "target_system": null,
+        "prefix": "84.205.65.0/24",
+        "as_path": [
+            "20130",
+            "6939",
+            "1299",
+            "6233",
+            "12654"
+        ],
+        "additional_info": ""
+    },
+    {
+        "timestamp": "1735689617.678635",
+        "status": "A",
+        "ip": "140.192.8.16",
+        "start_system": "20130",
+        "target_system": null,
+        "prefix": "84.205.64.0/24",
+        "as_path": [
+            "20130",
+            "6939",
+            "1299",
+            "50304",
+            "12654"
+        ],
+        "additional_info": ""
+    },
+    {
+        "timestamp": "1735689617.678645",
+        "status": "A",
+        "ip": "140.192.8.16",
+        "start_system": "20130",
+        "target_system": null,
+        "prefix": "160.22.180.0/23",
+        "as_path": [
+            "20130",
+            "6939",
+            "9304",
+            "142108"
+        ],
+        "additional_info": ""
+    },
+    {
+        "timestamp": "1735689617.678653",
+        "status": "A",
+        "ip": "140.192.8.16",
+        "start_system": "20130",
+        "target_system": null,
+        "prefix": "84.205.69.0/24",
+        "as_path": [
+            "20130",
+            "6939",
+            "1299",
+            "48362",
+            "12654"
+        ],
+        "additional_info": ""
+    },
+    {
+        "timestamp": "1735689617.678664",
+        "status": "W",
+        "ip": "198.58.198.252",
+        "start_system": "1403",
+        "target_system": null,
+        "prefix": "62.113.88.0/24",
+        "as_path": null,
+        "additional_info": null
+    },
+    {
+        "timestamp": "1735689617.678670",
+        "status": "A",
+        "ip": "198.58.198.252",
+        "start_system": "1403",
+        "target_system": null,
+        "prefix": "62.113.88.0/24",
+        "as_path": [
+            "1403",
+            "577",
+            "1299",
+            "8359"
+        ],
+        "additional_info": "1403:141"
+    },
+    {
+        "timestamp": "1735689617.678681",
+        "status": "A",
+        "ip": "198.58.198.252",
+        "start_system": "1403",
+        "target_system": null,
+        "prefix": "209.22.67.0/24",
+        "as_path": [
+            "1403",
+            "577",
+            "6453",
+            "3356",
+            "721",
+            "721",
+            "27064",
+            "2046",
+            "2046",
+            "2046",
+            "2046"
+        ],
+        "additional_info": "1403:140"
+    },
+    {
+        "timestamp": "1735689617.678700",
+        "status": "A",
+        "ip": "198.58.198.252",
+        "start_system": "1403",
+        "target_system": null,
+        "prefix": "84.205.64.0/24",
+        "as_path": [
+            "1403",
+            "1299",
+            "50304",
+            "12654"
+        ],
+        "additional_info": "1299:30000"
+    },
+    {
+        "timestamp": "1735689617.678711",
+        "status": "A",
+        "ip": "198.58.198.252",
+        "start_system": "1403",
+        "target_system": null,
+        "prefix": "84.205.65.0/24",
+        "as_path": [
+            "1403",
+            "1299",
+            "6233",
+            "12654"
+        ],
+        "additional_info": "1299:30000"
+    },
+    {
+        "timestamp": "1735689617.678724",
+        "status": "A",
+        "ip": "198.58.198.252",
+        "start_system": "1403",
+        "target_system": null,
+        "prefix": "177.36.156.0/24",
+        "as_path": [
+            "1403",
+            "1299",
+            "3356",
+            "268624",
+            "262401"
+        ],
+        "additional_info": "1299:25000"
+    },
+    {
+        "timestamp": "1735689617.678743",
+        "status": "A",
+        "ip": "198.58.198.252",
+        "start_system": "1403",
+        "target_system": null,
+        "prefix": "84.205.66.0/24",
+        "as_path": [
+            "1403",
+            "1299",
+            "42541",
+            "12654"
+        ],
+        "additional_info": "1299:30000"
+    },
+    {
+        "timestamp": "1735689617.678752",
+        "status": "A",
+        "ip": "198.58.198.252",
+        "start_system": "1403",
+        "target_system": null,
+        "prefix": "84.205.69.0/24",
+        "as_path": [
+            "1403",
+            "1299",
+            "48362",
+            "12654"
+        ],
+        "additional_info": "1299:30000"
+    },
+    {
+        "timestamp": "1735689617.678762",
+        "status": "A",
+        "ip": "198.58.198.252",
+        "start_system": "1403",
+        "target_system": null,
+        "prefix": "84.205.67.0/24",
+        "as_path": [
+            "1403",
+            "1299",
+            "42541",
+            "12654"
+        ],
+        "additional_info": "1299:30000"
+    },
+    {
+        "timestamp": "1735689617.678773",
+        "status": "A",
+        "ip": "198.58.198.252",
+        "start_system": "1403",
+        "target_system": null,
+        "prefix": "84.205.75.0/24",
+        "as_path": [
+            "1403",
+            "1299",
+            "9002",
+            "12654"
+        ],
+        "additional_info": "1299:25000"
+    },
+    {
+        "timestamp": "1735689617.678784",
+        "status": "W",
+        "ip": "64.71.137.241",
+        "start_system": "6939",
+        "target_system": null,
+        "prefix": "160.22.180.0/23",
+        "as_path": null,
+        "additional_info": null
+    },
+    {
+        "timestamp": "1735689617.678784",
+        "status": "A",
+        "ip": "64.71.137.241",
+        "start_system": "6939",
+        "target_system": null,
+        "prefix": "84.205.75.0/24",
+        "as_path": [
+            "6939",
+            "19151",
+            "12654"
+        ],
+        "additional_info": ""
+    },
+    {
+        "timestamp": "1735689617.678799",
+        "status": "A",
+        "ip": "64.71.137.241",
+        "start_system": "6939",
+        "target_system": null,
+        "prefix": "84.205.75.0/24",
+        "as_path": [
+            "6939",
+            "12654"
+        ],
+        "additional_info": ""
+    },
+    {
+        "timestamp": "1735689617.678806",
+        "status": "A",
+        "ip": "64.71.137.241",
+        "start_system": "6939",
+        "target_system": null,
+        "prefix": "177.36.156.0/24",
+        "as_path": [
+            "6939",
+            "3356",
+            "268624",
+            "262401"
+        ],
+        "additional_info": ""
+    },
+    {
+        "timestamp": "1735689617.678815",
+        "status": "A",
+        "ip": "64.71.137.241",
+        "start_system": "6939",
+        "target_system": null,
+        "prefix": "160.22.180.0/23",
+        "as_path": [
+            "6939",
+            "9304",
+            "142108"
+        ],
+        "additional_info": ""
+    },
+    {
+        "timestamp": "1735689617.678825",
+        "status": "A",
+        "ip": "64.71.137.241",
+        "start_system": "6939",
+        "target_system": null,
+        "prefix": "84.205.64.0/24",
+        "as_path": [
+            "6939",
+            "61218",
+            "12654"
+        ],
+        "additional_info": ""
+    },
+    {
+        "timestamp": "1735689617.678833",
+        "status": "A",
+        "ip": "64.71.137.241",
+        "start_system": "6939",
+        "target_system": null,
+        "prefix": "84.205.76.0/24",
+        "as_path": [
+            "6939",
+            "1299",
+            "6233",
+            "12654"
+        ],
+        "additional_info": ""
+    },
+    {
+        "timestamp": "1735689617.678842",
+        "status": "A",
+        "ip": "64.71.137.241",
+        "start_system": "6939",
+        "target_system": null,
+        "prefix": "84.205.67.0/24",
+        "as_path": [
+            "6939",
+            "1299",
+            "42541",
+            "12654"
+        ],
+        "additional_info": ""
+    },
+    {
+        "timestamp": "1735689617.678850",
+        "status": "A",
+        "ip": "64.71.137.241",
+        "start_system": "6939",
+        "target_system": null,
+        "prefix": "84.205.65.0/24",
+        "as_path": [
+            "6939",
+            "1299",
+            "6233",
+            "12654"
+        ],
+        "additional_info": ""
+    },
+    {
+        "timestamp": "1735689617.678858",
+        "status": "A",
+        "ip": "64.71.137.241",
+        "start_system": "6939",
+        "target_system": null,
+        "prefix": "84.205.67.0/24",
+        "as_path": [
+            "6939",
+            "44684",
+            "12654"
+        ],
+        "additional_info": ""
+    },
+    {
+        "timestamp": "1735689617.678877",
+        "status": "A",
+        "ip": "64.71.137.241",
+        "start_system": "6939",
+        "target_system": null,
+        "prefix": "84.205.65.0/24",
+        "as_path": [
+            "6939",
+            "6894",
+            "12654"
+        ],
+        "additional_info": ""
+    },
+    {
+        "timestamp": "1735689617.678891",
+        "status": "A",
+        "ip": "89.149.178.10",
+        "start_system": "3257",
+        "target_system": null,
+        "prefix": "130.137.150.0/24",
+        "as_path": [
+            "3257",
+            "6453",
+            "16509"
+        ],
+        "additional_info": "3257:8052 3257:30110 3257:50001 3257:54900 3257:54901"
+    },
+    {
+        "timestamp": "1735689617.678908",
+        "status": "W",
+        "ip": "89.149.178.10",
+        "start_system": "3257",
+        "target_system": null,
+        "prefix": "62.113.88.0/24",
+        "as_path": null,
+        "additional_info": null
+    },
+    {
+        "timestamp": "1735689617.678908",
+        "status": "W",
+        "ip": "89.149.178.10",
+        "start_system": "3257",
+        "target_system": null,
+        "prefix": "38.146.198.0/23",
+        "as_path": null,
+        "additional_info": null
     }
 ]
