@@ -108,7 +108,6 @@ fetch("/points")
       .then((response) => response.json())
       .then((routes) => {
         routes.forEach((route, index) => {
-          console.log("Processing route:", route);
 
           if (route.as_path && route.as_path.length > 1) {
             const pathCoordinates = [];

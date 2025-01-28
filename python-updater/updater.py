@@ -74,7 +74,6 @@ def create_routes(file_path):
             lines = file.readlines()
 
             for line in tqdm(lines, desc="Erstelle Routen"):
-                print(line)
                 parts = line.strip().split("|")
 
                 # Extrahieren der relevanten Daten
