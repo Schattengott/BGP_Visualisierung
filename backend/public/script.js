@@ -13,7 +13,7 @@ const map = L.map("map", {
 L.tileLayer("https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png", {
   attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/">CARTO</a>',
   subdomains: "abcd", // Subdomains für die Karten
-  noWrap: true // Verhindert die Wiederholung der Kacheln bei horizontalem Scrollen
+  // noWrap: true // Verhindert die Wiederholung der Kacheln bei horizontalem Scrollen
 }).addTo(map);
 
 let uniqueEdges = new Map(); // Speichert Kanten (Routen) in einer Map
