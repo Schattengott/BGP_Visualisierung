@@ -1,19 +1,10 @@
-let allRoutes = null;
-let activeStartSystem = null;
-let activeRoutes = [];
-let activeMarker = null;
-let points = []; // Punkte global speichern
-
 // Karte initialisieren
 const map = L.map("map", {
   center: [20, 0],
   zoom: 2,
   minZoom: 2,
   maxZoom: 14,
-  maxBounds: [
-    [-90, -180],
-    [90, 180],
-  ],
+  maxBounds: [[-90, -180], [90, 180]],
   maxBoundsViscosity: 0.5,
 });
 
@@ -23,146 +14,211 @@ L.tileLayer("https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png", {
   subdomains: "abcd",
 }).addTo(map);
 
+// Variable für die aktuell geladenen Routen-Polylinien
+let currentRoutePolylines = [];
+
+// Funktion zum Entfernen der aktuell geladenen Routen
+function clearRoutes() {
+  // Alle aktuellen Routen entfernen
+  currentRoutePolylines.forEach(polyline => {
+    map.removeLayer(polyline); // Entferne Polyline von der Karte
+  });
+  currentRoutePolylines = []; // Leere das Array
+}
+
+// Funktion zur Berechnung der Markerfarbe basierend auf routes_count
+function getMarkerColor(routesCount) {
+  const intensity = Math.min(255, 50 + routesCount * 20); // Helligkeit skalieren
+  return `rgb(${intensity}, ${intensity}, 50)`; // Gelbtöne
+}
+
+// Generiert eine zufällige Farbe für jede Route
 function getRandomColor(index) {
-  // Erzeuge eine zufällige Farbe mit einem festen "Seed" für jede Zahl
   const r = (index * 50 + 100) % 255;
   const g = (index * 30 + 150) % 255;
   const b = (index * 10 + 200) % 255;
   return `rgb(${r}, ${g}, ${b})`;
 }
 
-// Funktion zur Berechnung der Farbe basierend auf der routes_count
-function getColorForRoutesCount(routesCount) {
-  // Skalieren des routesCount (z.B. Werte zwischen 0 und 3000)
-  const minCount = 0;
-  const maxCount = 3000; // Beispiel für maximalen routes_count (anpassen nach Bedarf)
+let currentHighlightedPolyline = null;
 
-  // Berechne den Rotanteil basierend auf der routes_count
-  const red = Math.min(255, Math.floor((routesCount / maxCount) * 255)); // Skaliere den Wert auf 0 bis 255
-
-  // Der Marker wird von grün (für niedrige Werte) nach rot (für hohe Werte) skaliert
-  return `rgb(${red}, 0, 0)`; // Rotanteil ändert sich je nach routes_count
-}
-
-// 🛠️ Funktion zum Laden aller Routen
-async function loadAllRoutes() {
-    if (allRoutes !== null) return; // Falls bereits geladen, nichts tun
-
-    try {
-        console.log("Lade Routen...");
-        const response = await fetch('/routes');
-        allRoutes = await response.json();
-        console.log("Routen erfolgreich geladen:", allRoutes.length);
-    } catch (error) {
-        console.error('Fehler beim Laden der Routen:', error);
-    }
-}
-
-// 🛠️ Funktion zum Filtern der Routen für ein bestimmtes Startsystem
-function getRoutesForStartSystem(startSystem) {
-    if (!allRoutes) return [];
-    return allRoutes.filter(route => route.start_system === startSystem);
-}
-
-let currentHighlightedPolyline = null; // Aktuell hervorgehobene Route
-
-// Klick-Handler für Routen
+// Funktion zur Hervorhebung der Route beim Klick
 function handleRouteClick(event) {
-    const clickedPolyline = event.target;
+  const clickedPolyline = event.target;
 
-    // Falls eine andere Route markiert war, entferne die Markierung
-    if (currentHighlightedPolyline && currentHighlightedPolyline !== clickedPolyline) {
-        currentHighlightedPolyline.setStyle({
-            weight: 2, // Standardbreite wiederherstellen
-            color: currentHighlightedPolyline.options.color, // Ursprüngliche Farbe beibehalten
+  if (currentHighlightedPolyline && currentHighlightedPolyline !== clickedPolyline) {
+    currentHighlightedPolyline.setStyle({
+      weight: 2,
+      color: currentHighlightedPolyline.options.color,
+    });
+  }
+
+  clickedPolyline.setStyle({
+    weight: 10,
+  });
+
+  currentHighlightedPolyline = clickedPolyline;
+}
+
+// ** Optimierung: Kanten speichern, um doppelte Linien zu vermeiden **
+const uniqueEdges = new Map();
+const edgeToRouteMap = new Map();
+
+// Funktion zum Laden der Routen für einen bestimmten ASN
+function loadRoutesForPoint(startAsn, points) {
+  clearRoutes(); // Alle aktuellen Routen löschen, bevor neue Routen geladen werden
+
+  fetch("/routes")
+    .then((response) => response.json())
+    .then((routes) => {
+      let colorIndex = 0;
+      uniqueEdges.clear();
+
+      // Filtere Routen, die den aktuellen Punkt als Startpunkt haben (ASN an erster Stelle)
+      const relevantRoutes = routes.filter((route) => route.as_path && route.as_path[0] === startAsn);
+
+      if (relevantRoutes.length === 0) {
+        console.log("Keine Routen gefunden, die mit diesem Knoten starten.");
+        return; // Keine Routen gefunden, verlasse die Funktion
+      }
+
+      // Für jede relevante Route
+      relevantRoutes.forEach((route) => {
+        let pathCoordinates = [];
+        let routeColor = getRandomColor(colorIndex++);
+
+        route.as_path.forEach((asn) => {
+          const point = points.find((p) => p.asn === asn);
+          if (point) {
+            pathCoordinates.push(point.coordinates);
+          }
         });
-    }
 
-    // Markierung für die neue Route setzen
-    clickedPolyline.setStyle({
-        weight: 10, // Route hervorheben
-        // color: "yellow", // Optional: Farbe ändern
-    });
+        // Wenn die Route mehr als einen Punkt hat, erstelle die Polyline
+        if (pathCoordinates.length > 1) {
+          for (let i = 0; i < pathCoordinates.length - 1; i++) {
+            const start = pathCoordinates[i];
+            const end = pathCoordinates[i + 1];
+            const edgeKey = JSON.stringify([start, end].sort());
 
-    currentHighlightedPolyline = clickedPolyline;
-}
+            // Erstelle eine neue Kante, falls sie noch nicht existiert
+            if (!uniqueEdges.has(edgeKey)) {
+              const polyline = L.polyline([start, end], {
+                color: routeColor,
+                weight: 2,
+              }).addTo(map);
 
-// Zeigt die Routen basierend auf dem ausgewählten Start-AS an
-async function updateRoutesDisplay(selectedStartSystem, marker) {
-    console.log(`Klick auf ASN: ${selectedStartSystem}`);
-
-    // Falls das gleiche System erneut angeklickt wurde, alle Routen entfernen
-    if (activeStartSystem === selectedStartSystem) {
-        clearRoutesDisplay();
-        activeStartSystem = null;
-        if (activeMarker) activeMarker.closePopup();
-        return;
-    }
-
-    clearRoutesDisplay();
-    activeStartSystem = selectedStartSystem;
-    activeMarker = marker;
-
-    await loadAllRoutes(); // Sicherstellen, dass die Routen geladen sind
-    const filteredRoutes = getRoutesForStartSystem(selectedStartSystem);
-
-    console.log(`Gefundene Routen für ASN ${selectedStartSystem}:`, filteredRoutes.length);
-
-    filteredRoutes.forEach((route, index) => {
-        if (route.as_path && route.as_path.length > 1) {
-            // console.log(`Route ${index + 1} ASN-Pfad: ${route.as_path.join(" → ")}`);
-
-            const pathCoordinates = route.as_path.map(asn => {
-                const point = points.find(p => p.asn === asn);
-                return point ? point.coordinates : null;
-            }).filter(coord => coord); // Nur gültige Koordinaten behalten
-
-            // console.log(`Route ${index + 1} gefundene Koordinaten:`, pathCoordinates);
-
-            if (pathCoordinates.length > 1) {
-                const polyline = L.polyline(pathCoordinates, {
-                    color: getRandomColor(index), // Jede Route erhält eine eigene Farbe
-                    weight: 2, // Standardbreite
-                }).addTo(map);
-
-                polyline.on("click", handleRouteClick); // Klick-Event hinzufügen
-
-                activeRoutes.push(polyline);
+              // Setze das Klick-Event für die Polyline
+              polyline.on("click", handleRouteClick);
+              uniqueEdges.set(edgeKey, polyline);
+              currentRoutePolylines.push(polyline); // Polyline zu den aktuellen Routen hinzufügen
             }
-            // else {
-            //     console.warn(`Route ${index + 1} ignoriert (weniger als 2 Punkte)`);
-            // }
+          }
         }
+      });
+    })
+    .catch((error) => {
+      console.error("Fehler beim Laden der Routen:", error);
     });
 }
 
-// 🛠️ Funktion zum Entfernen der angezeigten Routen
-function clearRoutesDisplay() {
-    activeRoutes.forEach(route => map.removeLayer(route));
-    activeRoutes = [];
+// Funktion zum Aktualisieren der Knotenliste
+function updateKnotenListe(points, markerMap) {
+  const listContainer = document.getElementById("list");
+  listContainer.innerHTML = ""; // Reset der Liste
+  const table = document.createElement("table");
+  const thead = document.createElement("thead");
+  const tbody = document.createElement("tbody");
+
+  // Tabellenkopf
+  thead.innerHTML = `
+    <tr>
+      <th>ASN</th>
+      <th>IP</th>
+      <th>Stadt</th>
+      <th>Region</th>
+      <th>Routenanzahl</th>
+    </tr>
+  `;
+
+  // Punkte durchgehen und nur Punkte mit routes_count > 0 anzeigen
+  points.forEach((point) => {
+    if (point.routes_count > 0) {
+      const row = document.createElement("tr");
+      row.innerHTML = `
+        <td>${point.asn || "Keine ASN"}</td>
+        <td>${point.ip || "Nicht verfügbar"}</td>
+        <td>${point.city || "Unbekannte Stadt"}</td>
+        <td>${point.region || "Unbekannte Region"}</td>
+        <td>${point.routes_count}</td>
+      `;
+
+      // Klickereignis für den Listeneintrag hinzufügen
+      row.addEventListener("click", () => {
+        if (markerMap.has(point.asn)) {
+          const marker = markerMap.get(point.asn);
+          // map.setView(marker.getLatLng(), 10); // Zoom zu diesem Marker
+          marker.fire('click'); // Simuliere Klick auf den Marker
+        }
+      });
+
+      tbody.appendChild(row);
+    }
+  });
+
+  table.appendChild(thead);
+  table.appendChild(tbody);
+  listContainer.appendChild(table);
 }
 
-// 🛠️ Punkte und Verbindungen laden
+// Punkte laden und Marker hinzufügen
 fetch("/points")
   .then((response) => response.json())
-  .then((data) => {
-    points = data; // Speichert die Punkte global
-    console.log("Punkte erfolgreich geladen:", points.length);
+  .then((points) => {
+    const markerMap = new Map();
 
     points.forEach((point) => {
-      // Berechne die Farbe basierend auf der routes_count
-      const color = getColorForRoutesCount(point.routes_count);
+      // Überprüfen, ob der Punkt eine gültige ASN und Koordinaten hat
+      const hasValidCoordinates = Array.isArray(point.coordinates) && point.coordinates.length === 2;
+      const hasValidAsn = point.asn !== undefined && point.asn !== null;
 
-      // Erstelle einen farbigen Marker (z.B. als Kreis)
-      const marker = L.circleMarker(point.coordinates, {
-        radius: 8, // Beispielradius, du kannst ihn nach Bedarf anpassen
-        color: color, // Dynamische Farbe
-        fillColor: color, // Füllfarbe
-        fillOpacity: 0.7 // Opazität der Füllfarbe
-      }).addTo(map);
+      // Weitere Validierung der Koordinaten
+      const isValidCoordinates =
+        hasValidCoordinates &&
+        typeof point.coordinates[0] === "number" && point.coordinates[0] >= -90 && point.coordinates[0] <= 90 &&
+        typeof point.coordinates[1] === "number" && point.coordinates[1] >= -180 && point.coordinates[1] <= 180;
 
-      marker.bindPopup(`<b>${point.city}</b><br>${point.region}<br>IP: ${point.ip}<br>ASN: ${point.asn}`);
-      marker.on("click", () => updateRoutesDisplay(point.asn, marker));
+      if (isValidCoordinates && hasValidAsn) {
+        // Berechnung der Markerfarbe basierend auf der routes_count
+        const markerColor = getMarkerColor(point.routes_count);
+
+        // Marker erstellen
+        const marker = L.circleMarker(point.coordinates, {
+          radius: 6,
+          color: markerColor,
+          fillColor: markerColor,
+          fillOpacity: 0.8,
+        }).addTo(map);
+
+        // Marker Popup mit Punktinformationen
+        marker.bindPopup(
+          `<b>${point.city || "Unbekannte Stadt"}</b><br>${point.region || "Unbekannte Region"}<br>IP: ${point.ip || "Nicht verfügbar"}<br>ASN: ${point.asn}<br>Routen: ${point.routes_count}`
+        );
+
+        // Klick-Event für den Marker
+        marker.on("click", function () {
+          loadRoutesForPoint(point.asn, points);
+        });
+
+        markerMap.set(point.asn, marker);
+      } else {
+        // Fehler in der Konsole ausgeben, wenn ASN oder Koordinaten fehlen oder ungültig sind
+        console.log(`Punkt mit ASN ${point.asn} hat ungültige oder fehlende Koordinaten und wird übersprungen.`);
+      }
     });
+
+    updateKnotenListe(points, markerMap);
   })
-  .catch(error => console.error("Fehler beim Laden der Punkte:", error));
+  .catch((error) => {
+    console.error("Fehler beim Laden der Punkte:", error);
+  });
