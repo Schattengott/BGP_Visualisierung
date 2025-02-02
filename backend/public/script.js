@@ -1,4 +1,4 @@
-// Initialisiere die Karte
+// Karte initialisieren
 const map = L.map("map", {
   center: [20, 0], // Startkoordinaten der Karte (Mittelpunkt)
   zoom: 2, // Anfangs-Zoomlevel
@@ -6,12 +6,14 @@ const map = L.map("map", {
   maxZoom: 14, // Maximales Zoomlevel
   maxBounds: [[-90, -180], [90, 180]], // Maximale Kartenbegrenzungen
   maxBoundsViscosity: 0.5, // Verhindert das Verlassen der maximalen Karte
+  // preferCanvas: true // Verwendet Canvas für bessere Performance bei vielen Elementen
 });
 
 // Füge den Dunkel-Mode Tile-Layer hinzu
 L.tileLayer("https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png", {
   attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/">CARTO</a>',
   subdomains: "abcd", // Subdomains für die Karten
+  noWrap: true // Verhindert die Wiederholung der Kacheln bei horizontalem Scrollen
 }).addTo(map);
 
 let uniqueEdges = new Map(); // Speichert Kanten (Routen) in einer Map
