@@ -70,7 +70,7 @@ function handleRouteClick(event) {
   currentHighlightedPolyline = clickedPolyline; // Setze die neue hervorgehobene Route
 
   // Ausgabe der Route (AS-Path) in der Konsole
-  const routeAsPath = clickedPolyline.as_path;
+  const routeAsPath = currentHighlightedPolyline.as_path;
   console.log("Route Knoten (ASNs):", routeAsPath);
 }
 
@@ -94,23 +94,37 @@ function loadRoutesForPoint(startAsn, points, markerMap) {
       }
 
       relevantRoutes.forEach((route) => {
+        if (!route || !Array.isArray(route.as_path)) {
+          console.warn("Ungültige Route oder fehlender as_path:", route);
+          return;
+        }
         let pathCoordinates = [];
         route.as_path.forEach((asn) => {
+          if (asn == null) {
+            console.warn("Null-Wert im as_path gefunden.");
+            return; // Überspringe null-Werte
+          }
           const point = points.find((p) => p.asn === asn);
-          if (point) {
+          if (point && point.coordinates) {
             pathCoordinates.push(point.coordinates);
-            asnCount.set(asn, (asnCount.get(asn) || 0) + 1); // Zähle, wie oft der ASN durchquert wurde
+            asnCount.set(asn, (asnCount.get(asn) || 0) + 1); // Zähle, wie oft der ASN vorkommt
+          } else {
+            console.warn(`Kein Punkt oder keine Koordinaten für ASN ${asn} gefunden.`);
           }
         });
 
         if (pathCoordinates.length > 1) {
-          const polyline = L.polyline(pathCoordinates, {
-            color: getRandomColor(colorIndex++),
-            weight: 2,
-          }).addTo(map);
-          polyline.on("click", handleRouteClick);
-          uniqueEdges.set(route.as_path.join('-'), polyline);
-          currentRoutePolylines.push(polyline);
+          try {
+            const polyline = L.polyline(pathCoordinates, {
+              color: getRandomColor(colorIndex++),
+              weight: 2,
+            }).addTo(map);
+            polyline.on("click", handleRouteClick);
+            uniqueEdges.set(route.as_path.join('-'), polyline);
+            currentRoutePolylines.push(polyline);
+          } catch (error) {
+            console.error("Fehler beim Erstellen der Polyline:", error);
+          }
         }
       });
 
@@ -122,27 +136,38 @@ function loadRoutesForPoint(startAsn, points, markerMap) {
 }
 
 function updateRouteList(asnCount) {
-  const routeListContainer = document.getElementById("route-list"); // Stelle sicher, dass ein Element mit dieser ID existiert
-  routeListContainer.innerHTML = ""; // Leere die Liste
-
-  // Falls keine Daten vorhanden sind
-  if (asnCount.size === 0) {
-    routeListContainer.innerHTML = "<p>Keine Routen gefunden.</p>";
+  const routeListContainer = document.getElementById("route-list");
+  if (!routeListContainer) {
+    console.error("Element 'route-list' nicht gefunden.");
     return;
   }
+  routeListContainer.innerHTML = "";
 
-  const list = document.createElement("ul");
+  try {
+    // Falls asnCount null oder leer ist, gib eine Nachricht aus
+    if (!asnCount || asnCount.size === 0) {
+      routeListContainer.innerHTML = "<p>Keine Routen gefunden.</p>";
+      return;
+    }
 
-  // Sortiere die ASNs nach Häufigkeit (höchste zuerst)
-  const sortedAsns = [...asnCount.entries()].sort((a, b) => b[1] - a[1]);
+    const list = document.createElement("ul");
 
-  sortedAsns.forEach(([asn, count]) => {
-    const listItem = document.createElement("li");
-    listItem.textContent = `ASN ${asn}: ${count}x durchquert`;
-    list.appendChild(listItem);
-  });
+    // Filtere null/undefinierte ASNs heraus und sortiere nach Häufigkeit (höchste zuerst)
+    const sortedAsns = [...asnCount.entries()]
+      .filter(([asn, count]) => asn != null)
+      .sort((a, b) => b[1] - a[1]);
 
-  routeListContainer.appendChild(list);
+    sortedAsns.forEach(([asn, count]) => {
+      const listItem = document.createElement("li");
+      listItem.textContent = `ASN ${asn}: ${count}x durchquert`;
+      list.appendChild(listItem);
+    });
+
+    routeListContainer.appendChild(list);
+  } catch (error) {
+    console.error("Fehler beim Aktualisieren der Routenliste:", error);
+    routeListContainer.innerHTML = "<p>Fehler beim Laden der Routenliste.</p>";
+  }
 }
 
 function updateDurchquerteKnotenListe(asnCount, points, startAsn, markerMap) {
@@ -162,8 +187,7 @@ function updateDurchquerteKnotenListe(asnCount, points, startAsn, markerMap) {
   thead.innerHTML = `
     <tr>
       <th>ASN</th>
-      <th>City</th>
-      <th>Region</th>
+      <th>AS-Name</th>
       <th>Crossings</th>
     </tr>
   `;
@@ -179,8 +203,7 @@ function updateDurchquerteKnotenListe(asnCount, points, startAsn, markerMap) {
       const row = document.createElement("tr");
       row.innerHTML = `
         <td>${asn}</td>
-        <td>${point.city || "Unbekannte Stadt"}</td>
-        <td>${point.region || "Unbekannte Region"}</td>
+        <td>${point.as_name || "Unbekanntes AS"}</td>
         <td>${count}</td>
       `;
 
@@ -223,8 +246,11 @@ function updateKnotenListe(points, markerMap) {
     </tr>
   `;
 
+  const sortedPoints = points
+  .sort((a, b) => b.routes_count - a.routes_count);
+
   // Durchlaufe alle Punkte und zeige nur Punkte mit Routenanzahl > 0 an
-  points.forEach((point) => {
+  sortedPoints.forEach((point) => {
     if (point.routes_count > 0) {
       const row = document.createElement("tr");
       row.innerHTML = `
