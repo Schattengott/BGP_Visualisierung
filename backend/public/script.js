@@ -75,57 +75,132 @@ function handleRouteClick(event) {
 }
 
 // Funktion zum Laden der Routen für einen bestimmten ASN
-function loadRoutesForPoint(startAsn, points) {
-  clearRoutes(); // Lösche alle aktuellen Routen, bevor neue geladen werden
+function loadRoutesForPoint(startAsn, points, markerMap) {
+  clearRoutes(); // Lösche alle aktuellen Routen
 
   fetch("/routes")
     .then((response) => response.json())
     .then((routes) => {
       let colorIndex = 0;
-      uniqueEdges.clear(); // Leere die Kanten-Map
+      uniqueEdges.clear();
+      let asnCount = new Map(); // Map zur Zählung der ASNs
 
-      // Filtere nur die Routen, die mit dem aktuellen ASN als Startpunkt übereinstimmen
       const relevantRoutes = routes.filter((route) => route.as_path && route.as_path[0] === startAsn);
 
       if (relevantRoutes.length === 0) {
         console.log("Keine Routen gefunden, die mit diesem Knoten starten.");
-        return; // Keine Routen gefunden, beende die Funktion
+        updateDurchquerteKnotenListe(asnCount, points, startAsn, markerMap); // Aktiviere die Knotenliste (leer)
+        return;
       }
 
-      // Verarbeite jede relevante Route
       relevantRoutes.forEach((route) => {
         let pathCoordinates = [];
-        let routeColor = getRandomColor(colorIndex++); // Zufällige Farbe für jede Route
-
         route.as_path.forEach((asn) => {
           const point = points.find((p) => p.asn === asn);
           if (point) {
-            pathCoordinates.push(point.coordinates); // Füge Koordinaten der Route hinzu
+            pathCoordinates.push(point.coordinates);
+            asnCount.set(asn, (asnCount.get(asn) || 0) + 1); // Zähle, wie oft der ASN durchquert wurde
           }
         });
 
-        // Wenn die Route mehr als einen Punkt hat, erstelle die Polyline
         if (pathCoordinates.length > 1) {
-          // Erstelle die Polyline für die gesamte Route
           const polyline = L.polyline(pathCoordinates, {
-            color: routeColor,
+            color: getRandomColor(colorIndex++),
             weight: 2,
           }).addTo(map);
-
-          // Speichere den AS-Path als benutzerdefiniertes Attribut
-          polyline.as_path = route.as_path;
-
-          // Setze das Klick-Event für die Route
           polyline.on("click", handleRouteClick);
-
-          uniqueEdges.set(route.as_path.join('-'), polyline); // Speichere die Kante
-          currentRoutePolylines.push(polyline); // Füge die Polyline zu den geladenen Routen hinzu
+          uniqueEdges.set(route.as_path.join('-'), polyline);
+          currentRoutePolylines.push(polyline);
         }
       });
+
+      updateDurchquerteKnotenListe(asnCount, points, startAsn, markerMap); // Aktiviere die Liste der durchquerten Knoten
     })
     .catch((error) => {
       console.error("Fehler beim Laden der Routen:", error);
     });
+}
+
+function updateRouteList(asnCount) {
+  const routeListContainer = document.getElementById("route-list"); // Stelle sicher, dass ein Element mit dieser ID existiert
+  routeListContainer.innerHTML = ""; // Leere die Liste
+
+  // Falls keine Daten vorhanden sind
+  if (asnCount.size === 0) {
+    routeListContainer.innerHTML = "<p>Keine Routen gefunden.</p>";
+    return;
+  }
+
+  const list = document.createElement("ul");
+
+  // Sortiere die ASNs nach Häufigkeit (höchste zuerst)
+  const sortedAsns = [...asnCount.entries()].sort((a, b) => b[1] - a[1]);
+
+  sortedAsns.forEach(([asn, count]) => {
+    const listItem = document.createElement("li");
+    listItem.textContent = `ASN ${asn}: ${count}x durchquert`;
+    list.appendChild(listItem);
+  });
+
+  routeListContainer.appendChild(list);
+}
+
+function updateDurchquerteKnotenListe(asnCount, points, startAsn, markerMap) {
+  const listContainer = document.getElementById("route-list");
+  listContainer.innerHTML = ""; // Setze den Inhalt der Liste zurück
+
+  // Füge die Überschrift hinzu
+  const header = document.createElement("h3");
+  header.innerHTML = `List of traversed ASNs for<br>ASN <span style="color: red;">${startAsn}</span>:`;
+  listContainer.appendChild(header);
+
+  const table = document.createElement("table");
+  const thead = document.createElement("thead");
+  const tbody = document.createElement("tbody");
+
+  // Erstelle den Tabellenkopf
+  thead.innerHTML = `
+    <tr>
+      <th>ASN</th>
+      <th>City</th>
+      <th>Region</th>
+      <th>Crossings</th>
+    </tr>
+  `;
+
+  // Konvertiere asnCount Map in ein Array und sortiere nach der Anzahl der Durchquerungen (absteigend)
+  const sortedAsnCount = [...asnCount].sort((a, b) => b[1] - a[1]);
+
+  // Gehe durch das sortierte Array von ASNs und ihrer Durchquerungsanzahl
+  sortedAsnCount.forEach(([asn, count]) => {
+    // Suche den Punkt, um Stadt und Region zu bekommen
+    const point = points.find(p => p.asn === asn);
+    if (point) {
+      const row = document.createElement("tr");
+      row.innerHTML = `
+        <td>${asn}</td>
+        <td>${point.city || "Unbekannte Stadt"}</td>
+        <td>${point.region || "Unbekannte Region"}</td>
+        <td>${count}</td>
+      `;
+
+      // Klickereignis für den Listeneintrag hinzufügen
+      row.addEventListener("click", () => {
+        if (markerMap.has(point.asn)) {
+          const marker = markerMap.get(point.asn);
+          // Zoom zu diesem Marker (optional)
+          // marker.fire('click'); // Simuliere Klick auf den Marker
+          marker.openPopup(); // Popup des Markers öffnen, ohne den Marker zu klicken
+        }
+      });
+
+      tbody.appendChild(row);
+    }
+  });
+
+  table.appendChild(thead);
+  table.appendChild(tbody);
+  listContainer.appendChild(table);
 }
 
 // Funktion zur Aktualisierung der Knotenliste
@@ -141,9 +216,9 @@ function updateKnotenListe(points, markerMap) {
     <tr>
       <th>ASN</th>
       <th>IP</th>
-      <th>Stadt</th>
+      <th>City</th>
       <th>Region</th>
-      <th>Routenanzahl</th>
+      <th>Routes</th>
     </tr>
   `;
 
@@ -208,12 +283,12 @@ fetch("/points")
 
         // Füge das Popup mit Punktinformationen hinzu
         marker.bindPopup(
-          `<b>${point.city || "Unbekannte Stadt"}</b><br>${point.region || "Unbekannte Region"}<br>IP: ${point.ip || "Nicht verfügbar"}<br>ASN: ${point.asn}<br>Routen: ${point.routes_count}`
+          `<b>${point.city || "Unbekannte Stadt"}</b><br>${point.region || "Unbekannte Region"}<br>IP: ${point.ip || "Nicht verfügbar"}<br>ASN: ${point.asn}`
         );
 
         // Klick-Event für den Marker
         marker.on("click", function () {
-          loadRoutesForPoint(point.asn, points);
+          loadRoutesForPoint(point.asn, points, markerMap);
         });
 
         markerMap.set(point.asn, marker);

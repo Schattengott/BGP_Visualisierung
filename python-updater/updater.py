@@ -17,7 +17,8 @@ def extract_unique_as(file_path):
     with open(file_path, 'r') as file:
         for line in file:
             parts = line.split('|')  # Teile die Zeile anhand von '|'
-            if len(parts) > 6:  # Überprüfe, ob der AS-Pfad vorhanden ist
+            status = parts[2]
+            if len(parts) > 6 and status == "A":  # Überprüfe, ob der AS-Pfad vorhanden ist
                 as_path = parts[6]  # AS-Pfad (z.B. "3561 209 3356 ...")
                 if as_path:  # Wenn der AS-Pfad nicht leer ist
                     as_list = as_path.split()  # Teile den AS-Pfad in einzelne AS
@@ -99,7 +100,10 @@ def create_routes(file_path):
                 start_as = parts[4]
                 prefix = parts[5]
                 asns = parts[6].split()  if len(parts) > 6 else None# Liste von AS-Nummern
-                target_as = None#asns[-1]  # Die letzte AS-Nummer im Pfad als Ziel-AS
+                if asns:
+                    target_as = asns[-1]  # Die letzte AS-Nummer im Pfad als Ziel-AS
+                else:
+                    target_as = None
                 target_ip = parts[9] if len(parts) > 9 else None
 
                 # Optional: Prüfen, ob es Startsysteme oder zusätzliche Informationen gibt
@@ -118,7 +122,8 @@ def create_routes(file_path):
                 }
 
                 # Die Route zur Liste hinzufügen
-                json_output.append(route)
+                if status=="A":
+                    json_output.append(route)
 
     # Die resultierende JSON-Ausgabe erstellen
     json_data = json.dumps(json_output, indent=4)
