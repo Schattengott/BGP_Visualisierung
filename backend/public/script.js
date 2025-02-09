@@ -215,6 +215,7 @@ function updateKnotenListe(points, markerMap) {
   thead.innerHTML = `
     <tr>
       <th>ASN</th>
+      <th>ASN-Name</th>
       <th>IP</th>
       <th>City</th>
       <th>Region</th>
@@ -228,6 +229,7 @@ function updateKnotenListe(points, markerMap) {
       const row = document.createElement("tr");
       row.innerHTML = `
         <td>${point.asn || "Keine ASN"}</td>
+        <td>${point.as_name || "Kein AS-Name"}</td>
         <td>${point.ip || "Nicht verfügbar"}</td>
         <td>${point.city || "Unbekannte Stadt"}</td>
         <td>${point.region || "Unbekannte Region"}</td>
@@ -283,7 +285,7 @@ fetch("/points")
 
         // Füge das Popup mit Punktinformationen hinzu
         marker.bindPopup(
-          `<b>${point.city || "Unbekannte Stadt"}</b><br>${point.region || "Unbekannte Region"}<br>IP: ${point.ip || "Nicht verfügbar"}<br>ASN: ${point.asn}`
+          `<b>${point.city || "Unbekannte Stadt"}</b><br>${point.region || "Unbekannte Region"}<br>IP: ${point.ip || "Nicht verfügbar"}<br>ASN: ${point.asn}<br>AS-Name: ${point.as_name}`
         );
 
         // Klick-Event für den Marker
