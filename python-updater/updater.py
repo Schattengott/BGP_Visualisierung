@@ -5,10 +5,10 @@ from tqdm import tqdm
 import csv
 
 # Pfad zur entpackten GeoLite2-Datenbank
-geo_db_path_geo = "../data/geolite_database/GeoLite2-City_20250124/GeoLite2-City.mmdb"
-geo_csv_path_ip = "F:/MeineWebserverProj/BGP_Visualisierung/data/geolite_database/geolite2-asn-ipv4.csv"
+geo_db_path_geo = "../data/geolite_database/GeoLite2-City.mmdb"
+geo_csv_path_ip = "../data/geolite_database/GeoLite2-ASN-Blocks-IPv4.csv"
 
-update_routes_list = "../data/updates.20250101.0000.txt"
+update_routes_list = "../data/updates.txt"
 
 # GeoIP2-Datenbank öffnen
 #reader = geoip2.database.Reader(geo_db_path_geo)
@@ -49,11 +49,10 @@ def load_csv_data(csv_path):
         reader = csv.reader(csvfile)
         for row in reader:
             # Annahme: Spalte 0 = start_ip, 1 = end_ip, 2 = ASN, 3 = Name
-            asn = row[2].strip()
+            asn = row[1].strip()
             entry = {
-                "start_ip": row[0].strip(),
-                "end_ip": row[1].strip(),
-                "name": row[3].strip()
+                "ip": row[0].strip().split("/")[0],
+                "name": row[2].strip()
             }
             csv_data.setdefault(asn, []).append(entry)
     return csv_data
@@ -76,7 +75,7 @@ def create_points(autonomous_systems, first_as_count):
                 if asn_str in csv_data:
                     # Hier wird der erste Eintrag genutzt – du kannst die Logik bei Bedarf anpassen
                     csv_entry = csv_data[asn_str][0]
-                    ip = csv_entry["start_ip"]
+                    ip = csv_entry["ip"]
                     as_name = csv_entry["name"]
                 else:
                     # Fallback: API-Abfrage über RIPEstat
