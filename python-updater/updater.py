@@ -95,7 +95,7 @@ def create_points(autonomous_systems, unique_routes):
                 region = geo_response.subdivisions.most_specific.name or "Unknown"
                 coordinates = [geo_response.location.latitude, geo_response.location.longitude]
 
-                # Anzahl der ausgehenden Routes, sofern vorhanden
+                # Anzahl der ausgehenden Routes, sofern vorhanden (verdreifacht Laufzeit der Schleife)
                 routes_count = sum(1 for route in unique_routes if route[0] == asn)
 
                 # Ergebnis hinzufügen
@@ -128,7 +128,6 @@ def create_routes(file_path):
 
     with open(file_path, 'r') as file:
         lines = file.readlines()
-        i = 0
 
         for line in tqdm(lines, desc="Erstelle Routen"):
             parts = line.strip().split("|")
@@ -162,11 +161,7 @@ def create_routes(file_path):
             # Die Route zur Liste hinzufügen, wenn Status "A" ist
             if status == "A" and route_key not in seen_routes:
                 json_output.append(route)
-                print(f"Route: {route} geaddet.")
                 seen_routes.add(route_key)  # Neue Route speichern
-            elif status == "A" and route_key in seen_routes:
-                i = i+1
-                #print(f"Folgende Route schon enthalten: {route_key}, insgesammt {i} Routen mehrfach.")
 
     # Die resultierende JSON-Ausgabe erstellen
     json_data = json.dumps(json_output, indent=4)
