@@ -57,7 +57,7 @@ def load_csv_data(csv_path):
             csv_data.setdefault(asn, []).append(entry)
     return csv_data
 
-def create_points(autonomous_systems, first_as_count):
+def create_points(autonomous_systems, unique_routes):
     """Für jede AS-Nummer: Versuche, zuerst die IP aus der CSV zu holen;
        wenn nicht vorhanden, benutze RIPEstat, um eine IP zu ermitteln.
        Anschließend werden Geodaten ermittelt und die Ergebnisse als JSON gespeichert."""
@@ -96,7 +96,7 @@ def create_points(autonomous_systems, first_as_count):
                 coordinates = [geo_response.location.latitude, geo_response.location.longitude]
 
                 # Anzahl der ausgehenden Routes, sofern vorhanden
-                routes_count = first_as_count.get(asn, 0)
+                routes_count = sum(1 for route in unique_routes if route[0] == asn)
 
                 # Ergebnis hinzufügen
                 result.append({
@@ -118,46 +118,55 @@ def create_points(autonomous_systems, first_as_count):
 
     print(f"JSON-Datei gespeichert: {output_file}")
 
+import json
+from tqdm import tqdm
+
 def create_routes(file_path):
     """Input: Update-Dump, Output eine JSON mit allen neuen Routen"""
     json_output = []
+    seen_routes = set()  # Set zum Speichern bereits verarbeiteter Routen
+
     with open(file_path, 'r') as file:
-            lines = file.readlines()
+        lines = file.readlines()
+        i = 0
 
-            for line in tqdm(lines, desc="Erstelle Routen"):
-                parts = line.strip().split("|")
+        for line in tqdm(lines, desc="Erstelle Routen"):
+            parts = line.strip().split("|")
 
-                # Extrahieren der relevanten Daten
-                timestamp = parts[1]
-                status = parts[2]
-                ip = parts[3]
-                start_as = parts[4]
-                prefix = parts[5]
-                asns = parts[6].split()  if len(parts) > 6 else None# Liste von AS-Nummern
-                if asns:
-                    target_as = asns[-1]  # Die letzte AS-Nummer im Pfad als Ziel-AS
-                else:
-                    target_as = None
-                target_ip = parts[9] if len(parts) > 9 else None
+            # Extrahieren der relevanten Daten
+            timestamp = parts[1]
+            status = parts[2]
+            ip = parts[3]
+            start_as = parts[4]
+            prefix = parts[5]
+            asns = parts[6].split() if len(parts) > 6 else None  # Liste von AS-Nummern
+            target_as = asns[-1] if asns else None  # Letzte AS-Nummer als Ziel-AS
+            target_ip = parts[9] if len(parts) > 9 else None
+            additional_info = parts[11] if len(parts) > 11 else None
 
-                # Optional: Prüfen, ob es Startsysteme oder zusätzliche Informationen gibt
-                additional_info = parts[11] if len(parts) > 11 else None
+            # Schlüssel zur Identifizierung eindeutiger Routen
+            route_key = tuple(asns) if asns else None
 
-                # Die JSON-Struktur für dieses Element
-                route = {
-                    "timestamp": timestamp,
-                    "status": status,
-                    "ip": ip,
-                    "start_system": start_as,
-                    "target_system": target_as,  # Zielsystem ist nun die AS-Nummer
-                    "prefix": prefix,
-                    "as_path": asns,
-                    "additional_info": additional_info
-                }
+            # Die JSON-Struktur für dieses Element
+            route = {
+                "timestamp": timestamp,
+                "status": status,
+                "ip": ip,
+                "start_system": start_as,
+                "target_system": target_as,  # Zielsystem ist nun die AS-Nummer
+                "prefix": prefix,
+                "as_path": asns,
+                "additional_info": additional_info
+            }
 
-                # Die Route zur Liste hinzufügen
-                if status=="A":
-                    json_output.append(route)
+            # Die Route zur Liste hinzufügen, wenn Status "A" ist
+            if status == "A" and route_key not in seen_routes:
+                json_output.append(route)
+                print(f"Route: {route} geaddet.")
+                seen_routes.add(route_key)  # Neue Route speichern
+            elif status == "A" and route_key in seen_routes:
+                i = i+1
+                #print(f"Folgende Route schon enthalten: {route_key}, insgesammt {i} Routen mehrfach.")
 
     # Die resultierende JSON-Ausgabe erstellen
     json_data = json.dumps(json_output, indent=4)
@@ -169,7 +178,9 @@ def create_routes(file_path):
 
     print(f"JSON-Datei gespeichert: {output_file}")
 
+    return seen_routes
+
 if __name__ == "__main__":
     unique_autonomous_systems, first_as_count = extract_unique_as(update_routes_list)
-    create_points(unique_autonomous_systems, first_as_count)
-    create_routes(update_routes_list)
+    unique_routes = create_routes(update_routes_list)
+    create_points(unique_autonomous_systems, unique_routes)
