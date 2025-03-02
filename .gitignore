@@ -1,4 +1,5 @@
 #Database
+/data
 data
 geolite_database
 
@@ -11,3 +12,4 @@ site.webmanifest
 
 #Private-Keys
 .env
+/data
