@@ -176,7 +176,7 @@ function updateDurchquerteKnotenListe(asnCount, points, startAsn, markerMap) {
 
   // Füge die Überschrift hinzu
   const header = document.createElement("h3");
-  header.innerHTML = `List of traversed ASNs for<br>ASN <span style="color: red;">${startAsn}</span>:`;
+  header.innerHTML = `List of traversed ASNs for ASN <span style="color: red;">${startAsn}</span>:`;
   listContainer.appendChild(header);
 
   const table = document.createElement("table");
@@ -188,18 +188,22 @@ function updateDurchquerteKnotenListe(asnCount, points, startAsn, markerMap) {
     <tr>
       <th>ASN</th>
       <th>AS-Name</th>
-      <th>Crossings</th>
+      <th>Ø</th>
     </tr>
   `;
 
   // Konvertiere asnCount Map in ein Array und sortiere nach der Anzahl der Durchquerungen (absteigend)
   const sortedAsnCount = [...asnCount].sort((a, b) => b[1] - a[1]);
 
+  // Flag, um zu prüfen, ob mindestens ein Eintrag hinzugefügt wurde
+  let hasEntries = false;
+
   // Gehe durch das sortierte Array von ASNs und ihrer Durchquerungsanzahl
   sortedAsnCount.forEach(([asn, count]) => {
     // Suche den Punkt, um Stadt und Region zu bekommen
     const point = points.find(p => p.asn === asn);
     if (point) {
+      hasEntries = true; // Es gibt mindestens einen Eintrag
       const row = document.createElement("tr");
       row.innerHTML = `
         <td>${asn}</td>
@@ -220,6 +224,13 @@ function updateDurchquerteKnotenListe(asnCount, points, startAsn, markerMap) {
       tbody.appendChild(row);
     }
   });
+
+  // Falls keine Einträge vorhanden sind, eine Meldung hinzufügen
+  if (!hasEntries) {
+    const row = document.createElement("tr");
+    row.innerHTML = `<td colspan="3">No outgoing routes found for this AS</td>`;
+    tbody.appendChild(row);
+  }
 
   table.appendChild(thead);
   table.appendChild(tbody);
