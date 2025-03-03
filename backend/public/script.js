@@ -224,8 +224,8 @@ function updateDurchquerteRoutenListe(startAsn, paginatedRoutes, routeMap) {
   // Erstelle den Tabellenkopf
   thead.innerHTML = `
     <tr>
-      <th>Route</th>
       <th>Target</th>
+      <th>Route</th>
       <th>Hops</th>
     </tr>
   `;
@@ -241,8 +241,8 @@ function updateDurchquerteRoutenListe(startAsn, paginatedRoutes, routeMap) {
       hasEntries = true; // Es gibt mindestens einen Eintrag
       const row = document.createElement("tr");
       row.innerHTML = `
-        <td>${route.as_path}</td>
         <td>${route.target_system || "Unbekanntes AS"}</td>
+        <td>${route.as_path}</td>
         <td>${route.as_path.length}</td>
       `;
 

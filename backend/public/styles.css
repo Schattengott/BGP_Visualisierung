@@ -58,6 +58,12 @@ body {
   overflow-y: auto; /* Scrollen, wenn nötig */
 }
 
+#routeList td:nth-child(2) {
+  max-width: 200px; /* Maximaler Wert für die Breite der as_path-Spalte */
+  white-space: normal; /* Ermöglicht den Zeilenumbruch */
+  overflow-wrap: break-word; /* Verhindert, dass lange Wörter außerhalb der Zelle laufen */
+}
+
 table {
   width: 100%;
   border-collapse: collapse;
