@@ -85,11 +85,15 @@ function loadRoutesForPoint(startAsn, points, markerMap) {
       uniqueEdges.clear();
       let asnCount = new Map(); // Map zur Zählung der ASNs
 
+      const routeMap = new Map();
+
       const relevantRoutes = routes.filter((route) => route.as_path && route.as_path[0] === startAsn);
+      const paginatedRoutes = relevantRoutes.slice(0, 100);
 
       if (relevantRoutes.length === 0) {
         console.log("Keine Routen gefunden, die mit diesem Knoten starten.");
         updateDurchquerteKnotenListe(asnCount, points, startAsn, markerMap); // Aktiviere die Knotenliste (leer)
+        updateDurchquerteRoutenListe(startAsn, paginatedRoutes, routeMap);
         return;
       }
 
@@ -113,7 +117,7 @@ function loadRoutesForPoint(startAsn, points, markerMap) {
           }
         });
 
-        if (pathCoordinates.length > 1) {
+        if (pathCoordinates.length > 1 && paginatedRoutes.includes(route) ) {
           try {
             const polyline = L.polyline(pathCoordinates, {
               color: getRandomColor(colorIndex++),
@@ -122,6 +126,8 @@ function loadRoutesForPoint(startAsn, points, markerMap) {
             polyline.on("click", handleRouteClick);
             uniqueEdges.set(route.as_path.join('-'), polyline);
             currentRoutePolylines.push(polyline);
+
+            routeMap.set(route.timestamp, polyline); // Speichern der Polyline mit route.timestamp als Schlüssel
           } catch (error) {
             console.error("Fehler beim Erstellen der Polyline:", error);
           }
@@ -129,45 +135,11 @@ function loadRoutesForPoint(startAsn, points, markerMap) {
       });
 
       updateDurchquerteKnotenListe(asnCount, points, startAsn, markerMap); // Aktiviere die Liste der durchquerten Knoten
+      updateDurchquerteRoutenListe(startAsn, paginatedRoutes, routeMap);
     })
     .catch((error) => {
       console.error("Fehler beim Laden der Routen:", error);
     });
-}
-
-function updateRouteList(asnCount) {
-  const routeListContainer = document.getElementById("route-list");
-  if (!routeListContainer) {
-    console.error("Element 'route-list' nicht gefunden.");
-    return;
-  }
-  routeListContainer.innerHTML = "";
-
-  try {
-    // Falls asnCount null oder leer ist, gib eine Nachricht aus
-    if (!asnCount || asnCount.size === 0) {
-      routeListContainer.innerHTML = "<p>Keine Routen gefunden.</p>";
-      return;
-    }
-
-    const list = document.createElement("ul");
-
-    // Filtere null/undefinierte ASNs heraus und sortiere nach Häufigkeit (höchste zuerst)
-    const sortedAsns = [...asnCount.entries()]
-      .filter(([asn, count]) => asn != null)
-      .sort((a, b) => b[1] - a[1]);
-
-    sortedAsns.forEach(([asn, count]) => {
-      const listItem = document.createElement("li");
-      listItem.textContent = `ASN ${asn}: ${count}x durchquert`;
-      list.appendChild(listItem);
-    });
-
-    routeListContainer.appendChild(list);
-  } catch (error) {
-    console.error("Fehler beim Aktualisieren der Routenliste:", error);
-    routeListContainer.innerHTML = "<p>Fehler beim Laden der Routenliste.</p>";
-  }
 }
 
 function updateDurchquerteKnotenListe(asnCount, points, startAsn, markerMap) {
@@ -215,9 +187,70 @@ function updateDurchquerteKnotenListe(asnCount, points, startAsn, markerMap) {
       row.addEventListener("click", () => {
         if (markerMap.has(point.asn)) {
           const marker = markerMap.get(point.asn);
-          // Zoom zu diesem Marker (optional)
           // marker.fire('click'); // Simuliere Klick auf den Marker
           marker.openPopup(); // Popup des Markers öffnen, ohne den Marker zu klicken
+        }
+      });
+
+      tbody.appendChild(row);
+    }
+  });
+
+  // Falls keine Einträge vorhanden sind, eine Meldung hinzufügen
+  if (!hasEntries) {
+    const row = document.createElement("tr");
+    row.innerHTML = `<td colspan="3">No outgoing routes found for this AS</td>`;
+    tbody.appendChild(row);
+  }
+
+  table.appendChild(thead);
+  table.appendChild(tbody);
+  listContainer.appendChild(table);
+}
+
+function updateDurchquerteRoutenListe(startAsn, paginatedRoutes, routeMap) {
+  const listContainer = document.getElementById("routeList");
+  listContainer.innerHTML = ""; // Setze den Inhalt der Liste zurück
+
+  // Füge die Überschrift hinzu
+  const header = document.createElement("h3");
+  header.innerHTML = `List of displayed Routes for ASN <span style="color: red;">${startAsn}</span>:`;
+  listContainer.appendChild(header);
+
+  const table = document.createElement("table");
+  const thead = document.createElement("thead");
+  const tbody = document.createElement("tbody");
+
+  // Erstelle den Tabellenkopf
+  thead.innerHTML = `
+    <tr>
+      <th>Route</th>
+      <th>Target</th>
+      <th>Hops</th>
+    </tr>
+  `;
+
+  // Flag, um zu prüfen, ob mindestens ein Eintrag hinzugefügt wurde
+  let hasEntries = false;
+
+  console.log(paginatedRoutes);
+
+  // Gehe durch das sortierte Array von ASNs und ihrer Durchquerungsanzahl
+  paginatedRoutes.forEach(route => {
+    if (route) {
+      hasEntries = true; // Es gibt mindestens einen Eintrag
+      const row = document.createElement("tr");
+      row.innerHTML = `
+        <td>${route.as_path}</td>
+        <td>${route.target_system || "Unbekanntes AS"}</td>
+        <td>${route.as_path.length}</td>
+      `;
+
+      // Füge einen Klick-Eventlistener für jede Tabellenzeile hinzu
+      row.addEventListener("click", () => {
+        if (routeMap.has(route.timestamp)) {
+          const marker = routeMap.get(route.timestamp);
+          marker.fire('click'); // Simuliere Klick auf den Marker
         }
       });
 
