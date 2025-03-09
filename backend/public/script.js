@@ -70,54 +70,65 @@ function handleRouteClick(event) {
   currentHighlightedPolyline = clickedPolyline; // Setze die neue hervorgehobene Route
 
   // Ausgabe der Route (AS-Path) in der Konsole
-  const routeAsPath = currentHighlightedPolyline.as_path;
-  console.log("Route Knoten (ASNs):", routeAsPath);
+  //const routeAsPath = currentHighlightedPolyline.as_path;
+  //console.log("Route Knoten (ASNs):", routeAsPath);
+}
+
+let currentPage = 0;
+const routesPerPage = 100;
+
+function updatePageCounter(totalRoutes) {
+  const totalPages = Math.ceil(totalRoutes / routesPerPage);
+  document.getElementById("page-counter").textContent = `Seite ${currentPage + 1} von ${totalPages}`;
+
+  // Buttons aktivieren oder deaktivieren
+  document.getElementById("prevPage").disabled = currentPage === 0;
+  document.getElementById("nextPage").disabled = currentPage >= totalPages - 1;
 }
 
 // Funktion zum Laden der Routen für einen bestimmten ASN
-function loadRoutesForPoint(startAsn, points, markerMap) {
-  clearRoutes(); // Lösche alle aktuellen Routen
+function loadRoutesForPoint(startAsn) {
+  clearRoutes(); // Vorherige Routen löschen
 
   fetch("/routes")
     .then((response) => response.json())
     .then((routes) => {
       let colorIndex = 0;
       uniqueEdges.clear();
-      let asnCount = new Map(); // Map zur Zählung der ASNs
-
+      let asnCount = new Map();
       const routeMap = new Map();
 
       const relevantRoutes = routes.filter((route) => route.as_path && route.as_path[0] === startAsn);
-      const paginatedRoutes = relevantRoutes.slice(0, 100);
+
+      // Gesamtanzahl der Seiten aktualisieren
+      updatePageCounter(relevantRoutes.length);
+
+      // Paginierung
+      const start = currentPage * routesPerPage;
+      const end = start + routesPerPage;
+      const paginatedRoutes = relevantRoutes.slice(start, end);
 
       if (relevantRoutes.length === 0) {
-        console.log("Keine Routen gefunden, die mit diesem Knoten starten.");
-        updateDurchquerteKnotenListe(asnCount, points, startAsn, markerMap); // Aktiviere die Knotenliste (leer)
+        console.log("Keine Routen gefunden.");
+        updateDurchquerteKnotenListe(asnCount, globalPoints, startAsn, globalMarkerMap);
         updateDurchquerteRoutenListe(startAsn, paginatedRoutes, routeMap);
         return;
       }
 
       relevantRoutes.forEach((route) => {
-        if (!route || !Array.isArray(route.as_path)) {
-          console.warn("Ungültige Route oder fehlender as_path:", route);
-          return;
-        }
+        if (!route || !Array.isArray(route.as_path)) return;
         let pathCoordinates = [];
+
         route.as_path.forEach((asn) => {
-          if (asn == null) {
-            console.warn("Null-Wert im as_path gefunden.");
-            return; // Überspringe null-Werte
-          }
-          const point = points.find((p) => p.asn === asn);
-          if (point && point.coordinates) {
+          if (!asn) return;
+          const point = globalPoints.find((p) => p.asn === asn);
+          if (point?.coordinates) {
             pathCoordinates.push(point.coordinates);
-            asnCount.set(asn, (asnCount.get(asn) || 0) + 1); // Zähle, wie oft der ASN vorkommt
-          } else {
-            console.warn(`Kein Punkt oder keine Koordinaten für ASN ${asn} gefunden.`);
+            asnCount.set(asn, (asnCount.get(asn) || 0) + 1);
           }
         });
 
-        if (pathCoordinates.length > 1 && paginatedRoutes.includes(route) ) {
+        if (pathCoordinates.length > 1 && paginatedRoutes.includes(route)) {
           try {
             const polyline = L.polyline(pathCoordinates, {
               color: getRandomColor(colorIndex++),
@@ -127,19 +138,31 @@ function loadRoutesForPoint(startAsn, points, markerMap) {
             uniqueEdges.set(route.as_path.join('-'), polyline);
             currentRoutePolylines.push(polyline);
 
-            routeMap.set(route.timestamp, polyline); // Speichern der Polyline mit route.timestamp als Schlüssel
+            routeMap.set(route.timestamp, polyline);
           } catch (error) {
-            console.error("Fehler beim Erstellen der Polyline:", error);
+            console.error("Fehler bei der Polyline:", error);
           }
         }
       });
 
-      updateDurchquerteKnotenListe(asnCount, points, startAsn, markerMap); // Aktiviere die Liste der durchquerten Knoten
+      updateDurchquerteKnotenListe(asnCount, globalPoints, startAsn, globalMarkerMap);
       updateDurchquerteRoutenListe(startAsn, paginatedRoutes, routeMap);
     })
-    .catch((error) => {
-      console.error("Fehler beim Laden der Routen:", error);
-    });
+    .catch((error) => console.error("Fehler beim Laden der Routen:", error));
+}
+
+function showNextRoutes() {
+  if (globalStartAsn) {
+    currentPage++;
+    loadRoutesForPoint(globalStartAsn);
+  }
+}
+
+function showPreviousRoutes() {
+  if (currentPage > 0 && globalStartAsn) {
+    currentPage--;
+    loadRoutesForPoint(globalStartAsn);
+  }
 }
 
 function updateDurchquerteKnotenListe(asnCount, points, startAsn, markerMap) {
@@ -233,8 +256,6 @@ function updateDurchquerteRoutenListe(startAsn, paginatedRoutes, routeMap) {
   // Flag, um zu prüfen, ob mindestens ein Eintrag hinzugefügt wurde
   let hasEntries = false;
 
-  console.log(paginatedRoutes);
-
   // Gehe durch das sortierte Array von ASNs und ihrer Durchquerungsanzahl
   paginatedRoutes.forEach(route => {
     if (route) {
@@ -324,10 +345,15 @@ function updateKnotenListe(points, markerMap) {
   listContainer.appendChild(table);
 }
 
+let globalPoints = [];
+let globalMarkerMap = new Map();
+let globalStartAsn = null;
+
 // Lade die Punkte und füge Marker hinzu
 fetch("/points")
   .then((response) => response.json())
   .then((points) => {
+    //globalPoints = points;  // Speichere global
     const markerMap = new Map();
 
     points.forEach((point) => {
@@ -342,6 +368,7 @@ fetch("/points")
         typeof point.coordinates[1] === "number" && point.coordinates[1] >= -180 && point.coordinates[1] <= 180;
 
       if (isValidCoordinates && hasValidAsn) {
+        globalPoints.push(point)
         // Berechne die Markerfarbe basierend auf der Routenanzahl
         const markerColor = getMarkerColor(point.routes_count);
 
@@ -355,12 +382,18 @@ fetch("/points")
 
         // Füge das Popup mit Punktinformationen hinzu
         marker.bindPopup(
-          `<b>${point.city || "Unbekannte Stadt"}</b><br>${point.region || "Unbekannte Region"}<br>IP: ${point.ip || "Nicht verfügbar"}<br>ASN: ${point.asn}<br>AS-Name: ${point.as_name}`
+          `<b>${point.city || "Unbekannte Stadt"}</b><br>
+           ${point.region || "Unbekannte Region"}<br>
+           IP: ${point.ip || "Nicht verfügbar"}<br>
+           ASN: <a href="https://ipinfo.io/AS${point.asn}" target="_blank">${point.asn}</a><br>
+           AS-Name: ${point.as_name || "Unbekannt"}`
         );
 
         // Klick-Event für den Marker
         marker.on("click", function () {
-          loadRoutesForPoint(point.asn, points, markerMap);
+          globalStartAsn = point.asn; // Setze globalen Start-ASN
+          currentPage = 0;
+          loadRoutesForPoint(globalStartAsn);
         });
 
         markerMap.set(point.asn, marker);
@@ -369,6 +402,7 @@ fetch("/points")
       }
     });
 
+    globalMarkerMap = markerMap; // Speichere `markerMap` global
     updateKnotenListe(points, markerMap);
   })
   .catch((error) => {
