@@ -79,7 +79,7 @@ const routesPerPage = 100;
 
 function updatePageCounter(totalRoutes) {
   const totalPages = Math.ceil(totalRoutes / routesPerPage);
-  document.getElementById("page-counter").textContent = `Seite ${currentPage + 1} von ${totalPages}`;
+  document.getElementById("page-counter").textContent = `Page ${currentPage + 1} of ${totalPages}`;
 
   // Buttons aktivieren oder deaktivieren
   document.getElementById("prevPage").disabled = currentPage === 0;
