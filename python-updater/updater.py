@@ -21,7 +21,10 @@ def extract_unique_as(file_path):
     with open(file_path, 'r') as file:
         for line in file:
             parts = line.split('|')  # Teile die Zeile anhand von '|'
-            status = parts[2]
+            if len(parts) > 2:
+                status = parts[2]
+            else:
+                status = "unknown"
             if len(parts) > 6 and status == "A":  # Überprüfe, ob der AS-Pfad vorhanden ist
                 as_path = parts[6]  # AS-Pfad (z.B. "3561 209 3356 ...")
                 if as_path:  # Wenn der AS-Pfad nicht leer ist
@@ -63,13 +66,23 @@ def create_points(autonomous_systems, unique_routes):
        Anschließend werden Geodaten ermittelt und die Ergebnisse als JSON gespeichert."""
     result = []
 
+    asn_with_outgoing_routes = {}
+    # Einmal durch das Set gehen und Startzahlen zählen
+    for tupel in unique_routes:
+        if tupel:  # Sicherstellen, dass das Tuple nicht leer ist
+            asn_with_outgoing_route = tupel[0]
+            if asn_with_outgoing_route in asn_with_outgoing_routes:
+                asn_with_outgoing_routes[asn_with_outgoing_route] += 1
+            else:
+                asn_with_outgoing_routes[asn_with_outgoing_route] = 1
+
     # CSV-Daten einmalig laden (effizienter als für jeden ASN die Datei zu öffnen)
     csv_data = load_csv_data(geo_csv_path_ip)
 
     with geoip2.database.Reader(geo_db_path_geo) as reader:
         for asn in tqdm(autonomous_systems, desc="Verarbeite AS-Nummern"):
             try:
-                ip = None
+                ip = "Unknown"
                 asn_str = str(asn)
                 # Zuerst in der CSV nachsehen
                 if asn_str in csv_data:
@@ -79,35 +92,35 @@ def create_points(autonomous_systems, unique_routes):
                     as_name = csv_entry["name"]
                 else:
                     # Fallback: API-Abfrage über RIPEstat
-                    ripe_url = f"https://stat.ripe.net/data/announced-prefixes/data.json?resource={asn}"
-                    ripe_response = requests.get(ripe_url).json()
-                    prefixes = ripe_response.get('data', {}).get('prefixes', [])
-                    if not prefixes:
-                        tqdm.write(f"Keine IPs für AS{asn} gefunden.")
-                        continue
+                    prefixes = ripe_req(asn)
                     # Nimm die erste Prefix, entferne den CIDR-Part
-                    ip = prefixes[0]['prefix'].split('/')[0]
+                    if prefixes != None:
+                        ip = prefixes[0]['prefix'].split('/')[0]
+                    else:
+                        ip = "Unknown"
                     as_name = "Unknown"  # Fallback, falls kein Name verfügbar ist
 
                 # Geodaten mit der GeoLite2-Datenbank abrufen
-                geo_response = reader.city(ip)
-                city = geo_response.city.name or "Unknown"
-                region = geo_response.subdivisions.most_specific.name or "Unknown"
-                coordinates = [geo_response.location.latitude, geo_response.location.longitude]
+                if ip != "Unknown":
+                    geo_response = reader.city(ip)
+                    city = geo_response.city.name or "Unknown"
+                    region = geo_response.subdivisions.most_specific.name or "Unknown"
+                    coordinates = [geo_response.location.latitude, geo_response.location.longitude]
 
-                # Anzahl der ausgehenden Routes, sofern vorhanden (verdreifacht Laufzeit der Schleife)
-                routes_count = sum(1 for route in unique_routes if route[0] == asn)
+                    # Anzahl der ausgehenden Routes, sofern vorhanden (10x Laufzeit der Schleife)
+                    #routes_count = sum(1 for route in unique_routes if route[0] == asn)
+                    routes_count = asn_with_outgoing_routes.get(asn,0)
 
-                # Ergebnis hinzufügen
-                result.append({
-                    "asn": asn,
-                    "as_name": as_name,
-                    "routes_count": routes_count,
-                    "ip": ip,
-                    "city": city,
-                    "region": region,
-                    "coordinates": coordinates
-                })
+                    # Ergebnis hinzufügen
+                    result.append({
+                        "asn": asn,
+                        "as_name": as_name,
+                        "routes_count": routes_count,
+                        "ip": ip,
+                        "city": city,
+                        "region": region,
+                        "coordinates": coordinates
+                    })
             except Exception as e:
                 tqdm.write(f"Fehler bei AS{asn}: {e}")
 
@@ -118,8 +131,16 @@ def create_points(autonomous_systems, unique_routes):
 
     print(f"JSON-Datei gespeichert: {output_file}")
 
-import json
-from tqdm import tqdm
+def ripe_req(asn):
+    """Ripe Abfrage zu bestimmter ASN"""
+    ripe_url = f"https://stat.ripe.net/data/announced-prefixes/data.json?resource={asn}"
+    tqdm.write(f"Suche für AS{asn} bei ripe...")
+    ripe_response = requests.get(ripe_url).json()
+    prefixes = ripe_response.get('data', {}).get('prefixes', [])
+    if not prefixes:
+        tqdm.write(f"Keine IPs für AS{asn} gefunden.")
+        return None
+    return prefixes
 
 def create_routes(file_path):
     """Input: Update-Dump, Output eine JSON mit allen neuen Routen"""
@@ -133,11 +154,11 @@ def create_routes(file_path):
             parts = line.strip().split("|")
 
             # Extrahieren der relevanten Daten
-            timestamp = parts[1]
-            status = parts[2]
-            ip = parts[3]
-            start_as = parts[4]
-            prefix = parts[5]
+            timestamp = parts[1] if len(parts) > 1 else None
+            status = parts[2] if len(parts) > 2 else None
+            ip = parts[3] if len(parts) > 3 else None
+            start_as = parts[4] if len(parts) > 4 else None
+            prefix = parts[5] if len(parts) > 5 else None
             asns = parts[6].split() if len(parts) > 6 else None  # Liste von AS-Nummern
             target_as = asns[-1] if asns else None  # Letzte AS-Nummer als Ziel-AS
             target_ip = parts[9] if len(parts) > 9 else None

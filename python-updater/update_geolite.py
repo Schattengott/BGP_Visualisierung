@@ -63,6 +63,23 @@ def download_and_extract(url, local_dir):
                 print(f"Verschiebe {extracted_file_path} nach {os.path.dirname(local_dir)}")
                 shutil.move(extracted_file_path, os.path.join(os.path.dirname(local_dir), file))
 
+def delete_subdirectories(directory):
+    """Löscht alle Unterverzeichnisse (Ordner) im angegebenen Verzeichnis, aber behält Dateien."""
+    if os.path.exists(directory):
+        # Iteriere über alle Elemente im Verzeichnis
+        for item in os.listdir(directory):
+            item_path = os.path.join(directory, item)
+            # Überprüfe, ob es ein Verzeichnis ist
+            if os.path.isdir(item_path):
+                print(f"Lösche das Verzeichnis: {item_path}")
+                shutil.rmtree(item_path)  # Löscht das Unterverzeichnis und seinen Inhalt
+            else:
+                pass
+                #print(f"Behalte die Datei: {item_path}")
+    else:
+        print(f"Das Verzeichnis {directory} existiert nicht.")
+
 if __name__ == "__main__":
     download_and_extract(GEOIP_URL_CITY, LOCAL_DIR)
     download_and_extract(GEOIP_URL_ASN_CSV, LOCAL_DIR)
+    delete_subdirectories(LOCAL_DIR)
