@@ -41,7 +41,7 @@ def extract_unique_as(file_path):
     # Gebe sowohl die einzigartigen AS als auch die Häufigkeit des ersten AS zurück
     return sorted(unique_as), first_as_count
 
-def load_csv_data(csv_path):
+def load_csv_data_asn(csv_path):
     """
     Lädt die CSV-Datei und baut ein Dictionary auf, in dem der Schlüssel
     die ASN (als String) ist und der Wert eine Liste von IP-Ranges (hier wird
@@ -51,7 +51,7 @@ def load_csv_data(csv_path):
     with open(csv_path, newline='', encoding="utf-8") as csvfile:
         reader = csv.reader(csvfile)
         for row in reader:
-            # Annahme: Spalte 0 = start_ip, 1 = end_ip, 2 = ASN, 3 = Name
+            # Annahme: Spalte 0 = ip, 1 = as_number, 2 = as_name
             asn = row[1].strip()
             entry = {
                 "ip": row[0].strip().split("/")[0],
@@ -77,12 +77,13 @@ def create_points(autonomous_systems, unique_routes):
                 asn_with_outgoing_routes[asn_with_outgoing_route] = 1
 
     # CSV-Daten einmalig laden (effizienter als für jeden ASN die Datei zu öffnen)
-    csv_data = load_csv_data(geo_csv_path_ip)
+    csv_data = load_csv_data_asn(geo_csv_path_ip)
 
     with geoip2.database.Reader(geo_db_path_geo) as reader:
         for asn in tqdm(autonomous_systems, desc="Verarbeite AS-Nummern"):
             try:
-                ip = "Unknown"
+                ip = "Unknown" # Fallback, falls keine IP verfügbar ist
+                as_name = "Unknown"  # Fallback, falls kein Name verfügbar ist
                 asn_str = str(asn)
                 # Zuerst in der CSV nachsehen
                 if asn_str in csv_data:
@@ -96,9 +97,6 @@ def create_points(autonomous_systems, unique_routes):
                     # Nimm die erste Prefix, entferne den CIDR-Part
                     if prefixes != None:
                         ip = prefixes[0]['prefix'].split('/')[0]
-                    else:
-                        ip = "Unknown"
-                    as_name = "Unknown"  # Fallback, falls kein Name verfügbar ist
 
                 # Geodaten mit der GeoLite2-Datenbank abrufen
                 if ip != "Unknown":
@@ -146,6 +144,7 @@ def create_routes(file_path):
     """Input: Update-Dump, Output eine JSON mit allen neuen Routen"""
     json_output = []
     seen_routes = set()  # Set zum Speichern bereits verarbeiteter Routen
+    is_legit = 0 #Wertet den Verdacht auf einen Angriff
 
     with open(file_path, 'r') as file:
         lines = file.readlines()
@@ -176,6 +175,7 @@ def create_routes(file_path):
                 "target_system": target_as,  # Zielsystem ist nun die AS-Nummer
                 "prefix": prefix,
                 "as_path": asns,
+                "is_legit": is_legit,
                 "additional_info": additional_info
             }
 
