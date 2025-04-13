@@ -6,6 +6,7 @@ ENV DEBIAN_FRONTEND=noninteractive
 # Installiere Systemtools inkl. bgpdump, Python, Node
 RUN apt-get update && \
     apt-get install -y \
+        supervisor \
         python3 \
         python3-pip \
         nodejs \
@@ -41,6 +42,8 @@ COPY backend/ ./backend/
 COPY python-updater/ ./python-updater/
 COPY data/ ./data/
 
+COPY .devcontainer/ ./.devcontainer/
+
 # Supervisor konfigurieren, um mehrere Prozesse zu starten
 COPY .devcontainer/supervisord.conf /etc/supervisor/conf.d/supervisord.conf
 
@@ -48,4 +51,4 @@ COPY .devcontainer/supervisord.conf /etc/supervisor/conf.d/supervisord.conf
 EXPOSE 3000
 
 # Startbefehl – Supervisor startet beide Prozesse
-CMD ["/usr/bin/.devcontainer/supervisord", "-c", "/etc/supervisor/conf.d/supervisord.conf"]
+CMD ["supervisord", "-c", "/etc/supervisor/conf.d/supervisord.conf"]
