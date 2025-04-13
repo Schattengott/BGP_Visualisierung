@@ -73,12 +73,12 @@ def parse_update_with_bgpdump(update_file, output_dir, output_filename):
     print(f"Verarbeite mit bgpdump: {wsl_update_file} -> {wsl_output_file}")
 
     #Erstelle das Verzeichnis für die Ausgabe in WSL in Windows
-    subprocess.run(["wsl", "mkdir", "-p", windows_to_wsl_path(output_dir)], check=True)
+    #subprocess.run(["wsl", "mkdir", "-p", windows_to_wsl_path(output_dir)], check=True)
     #Führe bgpdump in WSL aus
-    subprocess.run(["wsl", "bgpdump", "-m", wsl_update_file, "-O", wsl_output_file], check=True)
+    #subprocess.run(["wsl", "bgpdump", "-m", wsl_update_file, "-O", wsl_output_file], check=True)
 
     #Unter Linux
-    #subprocess.run(["bgpdump", "-m", update_file, "-O", output_file],  check=True)
+    subprocess.run(["bgpdump", "-m", update_file, "-O", output_file],  check=True)
 
     return output_file
 

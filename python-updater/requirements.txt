@@ -1,8 +1,8 @@
 # Basis
 requests
-json
 geoip2
-requests
+schedule
+dotenv
 
 #Dev
 tqdm

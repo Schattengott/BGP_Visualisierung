@@ -2,12 +2,18 @@ import subprocess
 import schedule
 import time
 import argparse
+import os
+
+LOCAL_DIR = "python-updater/"
 
 def run_module(module_name, quiet):
+    # Erstelle den vollständigen Pfad zum Modul
+    module_path = os.path.join(LOCAL_DIR, module_name)
+
     if quiet:
-        subprocess.run(["python", module_name], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+        subprocess.run(["python", module_path], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
     else:
-        subprocess.run(["python", module_name])
+        subprocess.run(["python", module_path])
 
 def job_a(quiet):
     print("[Scheduler] Starte Update_Geolite")

@@ -1,27 +1,51 @@
-# Codespaces Dockerfile
-FROM mcr.microsoft.com/devcontainers/javascript-node:0-20
+FROM ubuntu:22.04
 
-# Python hinzufügen
-RUN apt-get update && apt-get install -y python3 python3-pip
+# Vermeide interaktive Prompts
+ENV DEBIAN_FRONTEND=noninteractive
 
-# Arbeitsverzeichnis setzen
-WORKDIR /workspaces/BGP_Visualisierung
+# Installiere Systemtools inkl. bgpdump, Python, Node
+RUN apt-get update && \
+    apt-get install -y \
+        python3 \
+        python3-pip \
+        nodejs \
+        npm \
+        bgpdump \
+        build-essential \
+        curl \
+        git \
+        ca-certificates && \
+    apt-get clean
 
-# Python-Abhängigkeiten installieren
-# COPY python-updater/requirements.txt /tmp/requirements.txt
-# RUN pip3 install -r /tmp/requirements.txt
+# Fix für Node unter Ubuntu
+RUN [ -f /usr/bin/node ] || ln -s /usr/bin/nodejs /usr/bin/node
 
-# Kopiere nur package.json und package-lock.json (falls vorhanden)
-COPY backend/package.json backend/package-lock.json /workspaces/BGP_Visualisierung/backend/
+# Symlink für python3 -> python
+RUN ln -s /usr/bin/python3 /usr/bin/python
 
-# Installiere die Node.js-Abhängigkeiten
-RUN cd /workspaces/BGP_Visualisierung/backend && npm install
+# Setze Arbeitsverzeichnis
+WORKDIR /app
 
-# Kopiere den gesamten Quellcode
-COPY . /workspaces/BGP_Visualisierung
+# Python-Abhängigkeiten
+COPY python-updater/requirements.txt ./python-updater/
+RUN pip3 install --no-cache-dir -r python-updater/requirements.txt
 
-# Exponiere den Port 3000
+# Node-Abhängigkeiten
+COPY backend/package*.json ./backend/
+WORKDIR /app/backend
+RUN npm install
+
+# App-Code kopieren (Python & Node)
+WORKDIR /app
+COPY backend/ ./backend/
+COPY python-updater/ ./python-updater/
+COPY data/ ./data/
+
+# Supervisor konfigurieren, um mehrere Prozesse zu starten
+COPY .devcontainer/supervisord.conf /etc/supervisor/conf.d/supervisord.conf
+
+# Port öffnen (z. B. Express läuft auf 3000, Flask auf 5000, konfigurierbar)
 EXPOSE 3000
 
-# Starte den Server
-CMD ["node", "/workspaces/BGP_Visualisierung/backend/server.js"]
+# Startbefehl – Supervisor startet beide Prozesse
+CMD ["/usr/bin/.devcontainer/supervisord", "-c", "/etc/supervisor/conf.d/supervisord.conf"]
