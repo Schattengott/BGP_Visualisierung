@@ -4,7 +4,7 @@ import time
 import argparse
 import os
 
-LOCAL_DIR = "python-updater/"
+LOCAL_DIR = ""
 
 def run_module(module_name, quiet):
     # Erstelle den vollständigen Pfad zum Modul
