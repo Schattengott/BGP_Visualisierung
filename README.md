@@ -1,23 +1,37 @@
-# BGP_Visualisierung
-Visualisierung eines BGP-Hijacking-Angriffs
+# 🌐 BGP-Visualisierung
 
-Struktur:
+Ein plattformunabhängiges Tool zur Verarbeitung und Visualisierung von BGP-Routing-Informationen, bestehend aus einem Python-Parser (inkl. `bgpdump`) und einem Node.js-Backend. Bereitgestellt über einen Docker-Container.
 
-BGP_Visualisierung/
-├── backend/
-│   ├── server.js           # Node.js Backend
-│   ├── package.json        # Node.js Abhängigkeiten
-│   └── public/             # Statische Dateien
-│       ├── index.html      # Deine Webseite
-│       ├── script.js       # Deine Logik für die Karte
-│       └── styles.css      # Optional: CSS für deine Webseite
-├── data/
-│   ├── points.json         # Punkte-Daten
-│   └── connections.json    # Verbindungs-Daten
-├── python-updater/
-│   ├── updater.py          # Python-Skript, das die JSON-Dateien aktualisiert
-│   ├── requirements.txt    # Python-Abhängigkeiten
-├── .devcontainer/
-│   ├── devcontainer.json   # Konfiguration für Codespaces
-│   └── Dockerfile          # Optional: Dockerfile für deine Umgebung
-└── README.md               # Beschreibung des Projekts
+---
+
+## 🚀 Features
+
+- Verarbeitung von BGP-Update-Dateien mit `bgpdump`
+- Python-Skripte zur automatisierten Datenaufbereitung
+- Node.js-Backend zur Bereitstellung einer Webanwendung oder API
+- Nutzung von `supervisord` zur gleichzeitigen Ausführung beider Komponenten
+- Unterstützung für Linux, Windows (inkl. WSL) und Docker
+
+---
+
+## 📦 Voraussetzungen
+
+- [Docker](https://www.docker.com/)
+
+---
+
+## ⚙️ Installation & Nutzung
+
+### 🔨 Docker Image bauen
+
+```bash
+docker build -t bgp-visualisierung .
+```
+
+### ▶️ Container starten
+```bash
+docker run -p 3000:3000 bgp-visualisierung
+```
+
+Anschließend ist die Webanwendung erreichbar unter:
+👉 http://localhost:3000
