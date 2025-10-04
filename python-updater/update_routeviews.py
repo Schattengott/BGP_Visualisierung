@@ -84,7 +84,7 @@ def parse_update_with_bgpdump(update_file, output_dir, output_filename):
     else:
         #Unter Linux
         print(f"[Linux] Verarbeite mit bgpdump: {update_file} -> {output_file}")
-        
+
         subprocess.run(["bgpdump", "-m", update_file, "-O", output_file],  check=True)
 
     return output_file
