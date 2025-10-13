@@ -1,6 +1,7 @@
 import json
 import csv
 import ipaddress
+import math
 
 json_points = "../data/points.json"
 json_routes = "../data/routes.json"
@@ -36,6 +37,91 @@ def unique_ip_and_start_as_in_routes(daten):
             })
 
     return einzigartige_objekte
+
+def haversine_distance(coord1, coord2):
+    """Berechnet die Entfernung zwischen zwei Koordinatenpaaren in Kilometern."""
+    try:
+        if coord1 is None or coord2 is None:
+            raise ValueError("Eine der Koordinaten ist None.")
+        if len(coord1) != 2 or len(coord2) != 2:
+            raise ValueError("Koordinaten müssen zwei Elemente haben (lat, lon).")
+
+        lat1, lon1 = float(coord1[0]), float(coord1[1])
+        lat2, lon2 = float(coord2[0]), float(coord2[1])
+    except (TypeError, ValueError) as e:
+        # Logmeldung für Debugging und None zurückgeben, damit Aufrufer entscheiden kann
+        print(f"Ungültige Koordinaten für Distanzberechnung: {e} — coord1={coord1}, coord2={coord2}")
+        return 1000000
+    R = 6371  # Erdradius in km
+    lat1, lon1 = coord1
+    lat2, lon2 = coord2
+
+    phi1, phi2 = math.radians(lat1), math.radians(lat2)
+    d_phi = math.radians(lat2 - lat1)
+    d_lambda = math.radians(lon2 - lon1)
+
+    a = math.sin(d_phi / 2) ** 2 + math.cos(phi1) * math.cos(phi2) * math.sin(d_lambda / 2) ** 2
+    c = 2 * math.atan2(math.sqrt(a), math.sqrt(1 - a))
+    return R * c
+
+def filter_routes_by_geo_distance(routes, points, max_distance_km=3000):
+    """
+    Entfernt Routen aus 'routes', bei denen die geografische Entfernung zwischen
+    start_system und target_system (aus 'points') größer als max_distance_km ist.
+
+    Gibt eine gefilterte Routenliste zurück.
+    """
+    # Punkte in ein Dict umwandeln, damit wir schnell über ASN zugreifen können
+    as_coords = {str(p["asn"]): p["coordinates"] for p in points if "coordinates" in p}
+
+    neue_routes = []
+    entfernte_routen = 0
+
+    for route in routes:
+        start_as = str(route.get("start_system"))
+        target_as = str(route.get("target_system"))
+
+        if start_as in as_coords and target_as in as_coords:
+            coord1 = as_coords[start_as]
+            coord2 = as_coords[target_as]
+
+            distance = haversine_distance(coord1, coord2)
+
+            if distance <= max_distance_km:
+                neue_routes.append(route)
+            else:
+                entfernte_routen += 1
+                print(f"Entferne Route: {start_as} → {target_as} ({distance:.1f} km)")
+        else:
+            # Wenn einer der AS keine Koordinaten hat, Route löschen oder loggen
+            print(f"Keine Koordinaten für {start_as} oder {target_as}, Route wird entfernt.")
+            entfernte_routen += 1
+            #neue_routes.append(route)
+
+    print(f"\n➡️ {entfernte_routen} Routen entfernt (max. Distanz {max_distance_km} km).")
+    return neue_routes
+
+def update_routes_count(points, routes):
+    """
+    Aktualisiert das Feld 'routes_count' in den AS-Punkten basierend auf der
+    Anzahl der aktuell verbleibenden Routen, die von diesem AS starten.
+    """
+    # Zähle, wie oft jedes start_system in routes vorkommt
+    route_counts = {}
+    for route in routes:
+        start_as = str(route.get("start_system"))
+        route_counts[start_as] = route_counts.get(start_as, 0) + 1
+
+    # Update in den points-Daten
+    for point in points:
+        asn = str(point.get("asn"))
+        new_count = route_counts.get(asn, 0)
+        old_count = point.get("routes_count", 0)
+        if old_count != new_count:
+            print(f"🔄 Aktualisiere routes_count für AS{asn}: {old_count} → {new_count}")
+        point["routes_count"] = new_count
+
+    return points
 
 def load_csv_data_asn(csv_path):
     """
@@ -95,7 +181,7 @@ def check_ip_in_asn(json_data, csv_data):
 
     return treffer
 
-def update_is_legit(json_data, csv_data):
+def update_is_legit(json_data, csv_data, ammount):
     """
     Durchläuft die JSON-Daten und erhöht den 'is_legit' Zähler um 5,
     wenn für das start_system keine passende IP in den CSV-Daten gefunden wurde.
@@ -123,7 +209,7 @@ def update_is_legit(json_data, csv_data):
         # Wenn keine passende IP gefunden wurde, erhöhe 'is_legit' um 5
         if gefunden:
             #print(f"Kein Treffer gefunden für start_system {start_system}. Erhöhe 'is_legit' um 5.")
-            obj["is_legit"] += 5
+            obj["is_legit"] += ammount
 
     return json_data
 
@@ -131,11 +217,15 @@ if __name__ == "__main__":
     points = read_json(json_points)
     routes = read_json(json_routes)
 
+    routes = filter_routes_by_geo_distance(routes, points, max_distance_km=100)
+    points = update_routes_count(points, routes)
+
     einzigartige_objekte = unique_ip_and_start_as_in_routes(routes)
 
     csv_data = load_csv_data_asn(geo_csv_path_ip)
     treffer = check_ip_in_asn(einzigartige_objekte,csv_data)
 
-    routes = update_is_legit(routes, treffer)
+    routes = update_is_legit(routes, treffer, 5)
 
     save_json(routes, json_routes)
+    save_json(points, json_points)

@@ -75,7 +75,7 @@ function handleRouteClick(event) {
 }
 
 let currentPage = 0;
-const routesPerPage = 100;
+const routesPerPage = 20;
 
 function updatePageCounter(totalRoutes) {
   const totalPages = Math.ceil(totalRoutes / routesPerPage);
