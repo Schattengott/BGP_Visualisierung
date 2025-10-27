@@ -75,7 +75,7 @@ function handleRouteClick(event) {
 }
 
 let currentPage = 0;
-const routesPerPage = 100;
+const routesPerPage = 20;
 
 function updatePageCounter(totalRoutes) {
   const totalPages = Math.ceil(totalRoutes / routesPerPage);
@@ -86,9 +86,17 @@ function updatePageCounter(totalRoutes) {
   document.getElementById("nextPage").disabled = currentPage >= totalPages - 1;
 }
 
+let tempVisibleMarkers = [];
 // Funktion zum Laden der Routen für einen bestimmten ASN
 function loadRoutesForPoint(startAsn) {
   clearRoutes(); // Vorherige Routen löschen
+  // Temporär sichtbare Marker mit routes_count == 0 wieder entfernen
+  tempVisibleMarkers.forEach(marker => {
+    if (map.hasLayer(marker)) {
+      map.removeLayer(marker);
+    }
+  });
+  tempVisibleMarkers = [];
 
   fetch("/routes")
     .then((response) => response.json())
@@ -121,29 +129,40 @@ function loadRoutesForPoint(startAsn) {
 
         route.as_path.forEach((asn) => {
           if (!asn) return;
+
           const point = globalPoints.find((p) => p.asn === asn);
           if (point?.coordinates) {
             pathCoordinates.push(point.coordinates);
             asnCount.set(asn, (asnCount.get(asn) || 0) + 1);
+
+            // Marker sichtbar machen, falls er es nicht ist
+            const marker = globalMarkerMap.get(asn);
+            if (marker && !map.hasLayer(marker)) {
+              marker.addTo(map);
+              // Nur temporäre Marker mit routes_count === 0 merken
+              if (point.routes_count === 0) {
+                tempVisibleMarkers.push(marker);
+              }
+            }
           }
         });
 
-        if (pathCoordinates.length > 1 && paginatedRoutes.includes(route)) {
-          try {
-            const polyline = L.polyline(pathCoordinates, {
-              color: getRandomColor(colorIndex++),
-              weight: 2,
-            }).addTo(map);
-            polyline.on("click", handleRouteClick);
-            uniqueEdges.set(route.as_path.join('-'), polyline);
-            currentRoutePolylines.push(polyline);
+          if (pathCoordinates.length > 1 && paginatedRoutes.includes(route)) {
+            try {
+              const polyline = L.polyline(pathCoordinates, {
+                color: getRandomColor(colorIndex++),
+                weight: 2,
+              }).addTo(map);
+              polyline.on("click", handleRouteClick);
+              uniqueEdges.set(route.as_path.join('-'), polyline);
+              currentRoutePolylines.push(polyline);
 
-            routeMap.set(route.timestamp, polyline);
-          } catch (error) {
-            console.error("Fehler bei der Polyline:", error);
+              routeMap.set(route.timestamp, polyline);
+            } catch (error) {
+              console.error("Fehler bei der Polyline:", error);
+            }
           }
-        }
-      });
+        });
 
       updateDurchquerteKnotenListe(asnCount, globalPoints, startAsn, globalMarkerMap);
       updateDurchquerteRoutenListe(startAsn, paginatedRoutes, routeMap);
@@ -378,7 +397,11 @@ fetch("/points")
           color: markerColor,
           fillColor: markerColor,
           fillOpacity: 0.8,
-        }).addTo(map);
+        });
+
+        if (point.routes_count > 0) {
+          marker.addTo(map);
+        }
 
         // Füge das Popup mit Punktinformationen hinzu
         marker.bindPopup(
@@ -391,9 +414,11 @@ fetch("/points")
 
         // Klick-Event für den Marker
         marker.on("click", function () {
-          globalStartAsn = point.asn; // Setze globalen Start-ASN
-          currentPage = 0;
-          loadRoutesForPoint(globalStartAsn);
+          if (point.routes_count > 0) {
+            globalStartAsn = point.asn; // Setze globalen Start-ASN
+            currentPage = 0;
+            loadRoutesForPoint(globalStartAsn);
+          }
         });
 
         markerMap.set(point.asn, marker);

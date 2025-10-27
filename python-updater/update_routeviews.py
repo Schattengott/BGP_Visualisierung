@@ -1,6 +1,7 @@
 import os
 import requests
 import subprocess
+import platform
 import shutil
 import bz2
 from datetime import datetime, timedelta
@@ -66,19 +67,25 @@ def parse_update_with_bgpdump(update_file, output_dir, output_filename):
     """Parst das Update mit bgpdump und speichert es als Textdatei."""
     output_file = os.path.join(output_dir, output_filename)
 
-    #Konvertiere Windows-Pfade zu WSL-Pfaden
-    wsl_update_file = windows_to_wsl_path(update_file)
-    wsl_output_file = windows_to_wsl_path(output_file)
+    system = platform.system()
 
-    print(f"Verarbeite mit bgpdump: {wsl_update_file} -> {wsl_output_file}")
+    if system == "Windows":
+        #Konvertiere Windows-Pfade zu WSL-Pfaden
+        wsl_update_file = windows_to_wsl_path(update_file)
+        wsl_output_file = windows_to_wsl_path(output_file)
 
-    #Erstelle das Verzeichnis für die Ausgabe in WSL in Windows
-    subprocess.run(["wsl", "mkdir", "-p", windows_to_wsl_path(output_dir)], check=True)
-    #Führe bgpdump in WSL aus
-    subprocess.run(["wsl", "bgpdump", "-m", wsl_update_file, "-O", wsl_output_file], check=True)
+        print(f"[Windows/WSL] Verarbeite mit bgpdump: {wsl_update_file} -> {wsl_output_file}")
 
-    #Unter Linux
-    #subprocess.run(["bgpdump", "-m", update_file, "-O", output_file],  check=True)
+        #Erstelle das Verzeichnis für die Ausgabe in WSL in Windows
+        subprocess.run(["wsl", "mkdir", "-p", windows_to_wsl_path(output_dir)], check=True)
+        #Führe bgpdump in WSL aus
+        subprocess.run(["wsl", "bgpdump", "-m", wsl_update_file, "-O", wsl_output_file], check=True)
+
+    else:
+        #Unter Linux
+        print(f"[Linux] Verarbeite mit bgpdump: {update_file} -> {output_file}")
+
+        subprocess.run(["bgpdump", "-m", update_file, "-O", output_file],  check=True)
 
     return output_file
 
